@@ -25,9 +25,9 @@ Node 24.22.1；DSH 0.2.1-rc.2；pnpm 11.28.5；dsh-im 5.7.0；可选 dsh-bili-sc
 
 ## GitHub 与上传状态
 
-GitHub 账户已连接；当前工具可管理已有仓库，但没有创建新仓库能力。`karurukaruru/BigFish-Installer` 查询返回 404，未向其他项目写入，未推送、未创建线上 Release，也未运行远程 Actions。用户授权的替代交付为 Google Drive ZIP + 本文。
+GitHub 仓库 `karurukaruru/BigFish-Installer` 已创建（Private），完整的 81 个源码文件与素材已提交到 `main`；逐文件 Git blob SHA 及初次导入的 Git tree SHA 均与原始 Git bundle 一致。源码导入提交为 `c43737082dcc43e0b68905d6af568ea3eb839bb2`，其后另有文档状态更新。当前尚未创建线上 Release，GitHub Actions 的远程执行结果不包含在此前的 Linux 验收内。两份地区版 ZIP 仍保留在 Google Drive。
 
-后续有 GitHub 创建能力时，可建立 BigFish-Installer 仓库并推送 source；若包中含 git bundle，可 clone bundle 恢复。不要把当前未完成的 Windows 验收写进 Release 为已通过。
+GitHub 在线仓库使用新的导入提交，原始两次提交的完整历史仍保存在交接 ZIP 内的 Git bundle，可独立恢复。Windows 实机和扫码验收仍未完成，不可将这些项目在 GitHub Release 中标注为已通过。
 
 ## 构建与正式发布
 

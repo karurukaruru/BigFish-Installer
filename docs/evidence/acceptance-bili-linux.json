@@ -1,0 +1,15 @@
+{
+  "platform": "Linux",
+  "pluginVersion": "2.3.0",
+  "httpStatus": 200,
+  "pluginLoaded": true,
+  "pythonDependenciesReady": false,
+  "safeDefaults": {
+    "autoComment": false,
+    "replyToComments": false,
+    "dmMode": "off",
+    "peakValley": false,
+    "transcribe": false
+  },
+  "realBilibiliLogin": "not-tested"
+}

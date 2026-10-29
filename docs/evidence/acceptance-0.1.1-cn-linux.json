@@ -1,0 +1,16 @@
+{
+  "platform": "Ubuntu 24.04.3 LTS",
+  "dshCliAndHttp": true,
+  "imRpc": true,
+  "realAccountBinding": "not-tested",
+  "downloadRegion": "China",
+  "npmRegistry": "https://registry.npmmirror.com/",
+  "connections": [
+    "QQ\uFF1A\u5DF2\u914D\u7F6E 0 \u4E2A\uFF0C\u8FDE\u63A5 0 \u4E2A\u3002\u8BF7\u5148\u626B\u7801\u6216\u7ED1\u5B9A\u673A\u5668\u4EBA\u51ED\u636E\u3002",
+    "\u5FAE\u4FE1\uFF1A\u5DF2\u914D\u7F6E 0 \u4E2A\uFF0C\u8FDE\u63A5 0 \u4E2A\u3002\u8BF7\u5148\u626B\u7801\u6216\u7ED1\u5B9A\u673A\u5668\u4EBA\u51ED\u636E\u3002"
+  ],
+  "interfaceLanguage": "zh",
+  "idempotent": true,
+  "sentinelPreserved": true,
+  "stopSucceeded": true
+}

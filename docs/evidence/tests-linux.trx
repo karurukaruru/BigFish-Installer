@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="527c3068-7ec4-4fa3-b83c-3ed3ef502533" name="@622748018ee4 2026-10-28 20:21:47" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-28T20:21:47.8549214+08:00" queuing="2026-10-28T20:21:47.8549215+08:00" start="2026-10-28T20:21:46.6121410+08:00" finish="2026-10-28T20:21:56.1979016+08:00" />
+  <TestSettings name="default" id="be857572-efe2-443e-b5c2-a4d0d16ba240">
+    <Deployment runDeploymentRoot="_622748018ee4_2026-10-28_20_21_47" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="cd379005-3a7c-4871-b19b-5f696b1b25fe" testId="a65d97fb-beb6-3185-e780-3720d61d86e2" testName="BigFish.Tests.IntegrationTests.StartupTimeoutDoesNotReportSuccess" computerName="622748018ee4" duration="00:00:00.0082659" startTime="2026-10-28T20:21:56.0732232+08:00" endTime="2026-10-28T20:21:56.0818296+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cd379005-3a7c-4871-b19b-5f696b1b25fe" />
+    <UnitTestResult executionId="b60db067-5dc2-4793-bec4-e4301506f5dd" testId="067d78a9-4124-82c4-002d-e3c2c3acf572" testName="BigFish.Tests.UnitTests.LaunchUriMustBeLocal(url: &quot;http://example.com:3080/?token=secret&quot;, valid: False)" computerName="622748018ee4" duration="00:00:00.0001655" startTime="2026-10-28T20:21:47.7773084+08:00" endTime="2026-10-28T20:21:47.7773502+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b60db067-5dc2-4793-bec4-e4301506f5dd" />
+    <UnitTestResult executionId="68216734-27c1-479a-9588-474aecffb66a" testId="397f9f3a-8ddc-6430-dc85-a590e0304ab3" testName="BigFish.Tests.IntegrationTests.NetworkTimeoutIsNotReportedAsUserCancellation" computerName="622748018ee4" duration="00:00:03.1059410" startTime="2026-10-28T20:21:52.6511467+08:00" endTime="2026-10-28T20:21:55.7582225+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="68216734-27c1-479a-9588-474aecffb66a" />
+    <UnitTestResult executionId="19478da9-4653-4bca-b466-ea50b80fea26" testId="e305cc9f-34fc-659b-f060-e4a5a9ae95a9" testName="BigFish.Tests.IntegrationTests.FailedInstallResumesAndRepeatDoesNotReinstall" computerName="622748018ee4" duration="00:00:00.0123503" startTime="2026-10-28T20:21:52.6381100+08:00" endTime="2026-10-28T20:21:52.6508363+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="19478da9-4653-4bca-b466-ea50b80fea26" />
+    <UnitTestResult executionId="6bb3a5d2-93e2-4443-a370-3abc6dcf6446" testId="31232784-c6e0-7023-608d-c07d33049283" testName="BigFish.Tests.IntegrationTests.FailedProcessLaunchReleasesServiceOwnership" computerName="622748018ee4" duration="00:00:00.0143444" startTime="2026-10-28T20:21:48.8957368+08:00" endTime="2026-10-28T20:21:48.9118906+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6bb3a5d2-93e2-4443-a370-3abc6dcf6446" />
+    <UnitTestResult executionId="19a5307c-6924-42ae-ba26-955ebdd08ef7" testId="7aefb8b1-5dd5-0883-bf4f-083a8ecf7a3c" testName="BigFish.Tests.IntegrationTests.CancelledInstallDoesNotExecuteLaterStages" computerName="622748018ee4" duration="00:00:00.0125536" startTime="2026-10-28T20:21:47.8022628+08:00" endTime="2026-10-28T20:21:47.8164844+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="19a5307c-6924-42ae-ba26-955ebdd08ef7" />
+    <UnitTestResult executionId="2e6d87cf-98f0-4030-abf8-b40896df559b" testId="d30bfa21-fc59-6d88-01bc-ede3bf72d0ef" testName="BigFish.Tests.IntegrationTests.ProgressCountsOnlyExecutedStages(im: False, expected: 4)" computerName="622748018ee4" duration="00:00:00.0099246" startTime="2026-10-28T20:21:47.7900626+08:00" endTime="2026-10-28T20:21:47.8020403+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2e6d87cf-98f0-4030-abf8-b40896df559b" />
+    <UnitTestResult executionId="bfa9a976-9c3e-4c9d-8cb1-08b5369640f4" testId="21322eb1-8de4-c847-10a4-0f0ccea6dbe6" testName="BigFish.Tests.IntegrationTests.EmptyCompleteAndPartialEnvironments(node: False, dsh: False, im: False, n: 1, d: 1, i: 1)" computerName="622748018ee4" duration="00:00:00.0083754" startTime="2026-10-28T20:21:48.8614809+08:00" endTime="2026-10-28T20:21:48.8706043+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bfa9a976-9c3e-4c9d-8cb1-08b5369640f4" />
+    <UnitTestResult executionId="982c72b4-251d-4134-afb5-c0af37fe4723" testId="68f7a3e0-8433-f600-9552-237c0171dd2b" testName="BigFish.Tests.UnitTests.SecretsAreRedacted" computerName="622748018ee4" duration="00:00:00.0019727" startTime="2026-10-28T20:21:47.8215468+08:00" endTime="2026-10-28T20:21:47.8234076+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="982c72b4-251d-4134-afb5-c0af37fe4723" />
+    <UnitTestResult executionId="88bf5787-29e1-410f-9190-aa36fb17d8e9" testId="c62715b2-0c5d-0c81-92ee-9c3aff67bad2" testName="BigFish.Tests.IntegrationTests.RealLocalHttpAuthenticationAndPluginReadiness" computerName="622748018ee4" duration="00:00:00.0878493" startTime="2026-10-28T20:21:52.5325660+08:00" endTime="2026-10-28T20:21:52.6208145+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="88bf5787-29e1-410f-9190-aa36fb17d8e9" />
+    <UnitTestResult executionId="6f8abaa9-9ec3-4cc1-b0f3-c48bf972f6d5" testId="3d612a36-8cd8-234d-086a-db62bd4c9d72" testName="BigFish.Tests.UnitTests.ParseNode(text: &quot;v24.8.9&quot;, parsed: True, supported: False)" computerName="622748018ee4" duration="00:00:00.0005830" startTime="2026-10-28T20:21:47.7039512+08:00" endTime="2026-10-28T20:21:47.7040007+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6f8abaa9-9ec3-4cc1-b0f3-c48bf972f6d5" />
+    <UnitTestResult executionId="2cd66b9b-7cb8-4f25-a319-0cfb2cc8444b" testId="14311442-bb45-5430-aecd-1bf83f0dc482" testName="BigFish.Tests.UnitTests.ParseNode(text: &quot;v24.9.0-rc.1&quot;, parsed: False, supported: False)" computerName="622748018ee4" duration="00:00:00.0000369" startTime="2026-10-28T20:21:47.7756425+08:00" endTime="2026-10-28T20:21:47.7757067+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2cd66b9b-7cb8-4f25-a319-0cfb2cc8444b" />
+    <UnitTestResult executionId="86523129-7b77-4301-8224-6e647de57a3c" testId="6295f1c7-445d-8768-29bc-175c074079f8" testName="BigFish.Tests.UnitTests.PathsPreserveUnicodeAndRejectTraversal" computerName="622748018ee4" duration="00:00:00.0223592" startTime="2026-10-28T20:21:47.7820655+08:00" endTime="2026-10-28T20:21:47.8040067+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="86523129-7b77-4301-8224-6e647de57a3c" />
+    <UnitTestResult executionId="0a57cc06-b335-4a6c-afac-b6452bd85409" testId="f3898f0d-f7ea-943e-8789-d6b57b4d2f6c" testName="BigFish.Tests.UnitTests.StateRoundtripAndInterruptedStageRecovery" computerName="622748018ee4" duration="00:00:00.0483514" startTime="2026-10-28T20:21:47.7814954+08:00" endTime="2026-10-28T20:21:47.7815446+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0a57cc06-b335-4a6c-afac-b6452bd85409" />
+    <UnitTestResult executionId="33a3815f-dcb1-4f08-b7ec-51d0741c711a" testId="df767dc6-7452-c15e-6428-f20e57f4fedf" testName="BigFish.Tests.UnitTests.CommandsUseArgumentListWithoutShellExpansion" computerName="622748018ee4" duration="00:00:00.0065846" startTime="2026-10-28T20:21:47.8152039+08:00" endTime="2026-10-28T20:21:47.8213487+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="33a3815f-dcb1-4f08-b7ec-51d0741c711a" />
+    <UnitTestResult executionId="4c7dd8d8-b63e-4a52-8630-12ce35e55de3" testId="f82103f8-967a-4fe6-d20b-13079ce39e2a" testName="BigFish.Tests.IntegrationTests.UnrelatedHttpServerIsNotDsh" computerName="622748018ee4" duration="00:00:00.0053806" startTime="2026-10-28T20:21:52.6321410+08:00" endTime="2026-10-28T20:21:52.6378929+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4c7dd8d8-b63e-4a52-8630-12ce35e55de3" />
+    <UnitTestResult executionId="6ca5e074-08d2-4d7a-bed8-866ed620e11a" testId="63963b49-932b-885e-dd36-28f9028be8ac" testName="BigFish.Tests.UnitTests.ParseNode(text: &quot;v24.22.1&quot;, parsed: True, supported: True)" computerName="622748018ee4" duration="00:00:00.0000030" startTime="2026-10-28T20:21:47.7748792+08:00" endTime="2026-10-28T20:21:47.7749924+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6ca5e074-08d2-4d7a-bed8-866ed620e11a" />
+    <UnitTestResult executionId="eaf6404f-ebf6-4a9e-8576-fd668b862edb" testId="c0cc4a93-411c-8faf-d215-593e9ddae4cf" testName="BigFish.Tests.UnitTests.ParseNode(text: &quot;v999999999999999.0.0&quot;, parsed: False, supported: False)" computerName="622748018ee4" duration="00:00:00.0000028" startTime="2026-10-28T20:21:47.7044944+08:00" endTime="2026-10-28T20:21:47.7045706+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eaf6404f-ebf6-4a9e-8576-fd668b862edb" />
+    <UnitTestResult executionId="242a3fd7-3eb8-4613-afa7-841d0a5ef106" testId="6a028c5c-6400-884a-2470-177c24340ff5" testName="BigFish.Tests.IntegrationTests.OptionalFailurePreservesBaseCheckpoint" computerName="622748018ee4" duration="00:00:00.0101872" startTime="2026-10-28T20:21:52.6210961+08:00" endTime="2026-10-28T20:21:52.6318936+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="242a3fd7-3eb8-4613-afa7-841d0a5ef106" />
+    <UnitTestResult executionId="8181201b-0d4e-4072-a6f5-6979bceb17bc" testId="89a43f65-acbe-9853-f435-85d686b9d4a4" testName="BigFish.Tests.UnitTests.ParseNode(text: &quot;&quot;, parsed: False, supported: False)" computerName="622748018ee4" duration="00:00:00.0000020" startTime="2026-10-28T20:21:47.7046605+08:00" endTime="2026-10-28T20:21:47.7047076+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8181201b-0d4e-4072-a6f5-6979bceb17bc" />
+    <UnitTestResult executionId="72c95ef7-cb2d-4329-9e70-ffd533f1e6cb" testId="92e5ecad-c873-d03f-fda7-12fc1ea84b9b" testName="BigFish.Tests.IntegrationTests.EmptyCompleteAndPartialEnvironments(node: True, dsh: False, im: False, n: 0, d: 1, i: 1)" computerName="622748018ee4" duration="00:00:00.0104683" startTime="2026-10-28T20:21:48.8795976+08:00" endTime="2026-10-28T20:21:48.8890230+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="72c95ef7-cb2d-4329-9e70-ffd533f1e6cb" />
+    <UnitTestResult executionId="5bf7b259-6f15-4968-9c7e-3e5b7dd6535e" testId="b2c2d9d0-00da-4dd8-d142-b75adddce312" testName="BigFish.Tests.IntegrationTests.EmptyCompleteAndPartialEnvironments(node: True, dsh: True, im: True, n: 0, d: 0, i: 0)" computerName="622748018ee4" duration="00:00:00.0057612" startTime="2026-10-28T20:21:48.8892436+08:00" endTime="2026-10-28T20:21:48.8954684+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5bf7b259-6f15-4968-9c7e-3e5b7dd6535e" />
+    <UnitTestResult executionId="ea0d3737-4855-4127-86df-787601bfdd3a" testId="0e898b47-f170-660f-3831-0a7387cd327b" testName="BigFish.Tests.IntegrationTests.ActualChildProcessCancellationTerminatesPromptly" computerName="622748018ee4" duration="00:00:00.3134640" startTime="2026-10-28T20:21:55.7610901+08:00" endTime="2026-10-28T20:21:56.0728937+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ea0d3737-4855-4127-86df-787601bfdd3a" />
+    <UnitTestResult executionId="53fb183c-e336-4484-85c4-9f08a2b0c8f9" testId="9a349a9f-4d86-b51c-179a-f9e19d1354e4" testName="BigFish.Tests.UnitTests.OperationLockRejectsConcurrentInstaller" computerName="622748018ee4" duration="00:00:00.0009621" startTime="2026-10-28T20:21:47.8046465+08:00" endTime="2026-10-28T20:21:47.8047747+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="53fb183c-e336-4484-85c4-9f08a2b0c8f9" />
+    <UnitTestResult executionId="c5b1bbc7-4957-4beb-af23-474a61c1f319" testId="781f71bc-e801-7d12-0653-5e2b58544675" testName="BigFish.Tests.UnitTests.UntrustedDownloadSourcesAreRejected" computerName="622748018ee4" duration="00:00:00.0036052" startTime="2026-10-28T20:21:47.7818898+08:00" endTime="2026-10-28T20:21:47.7819296+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c5b1bbc7-4957-4beb-af23-474a61c1f319" />
+    <UnitTestResult executionId="971e79a9-ed96-4600-81e0-f2aa4d9ce4ef" testId="839bf902-2ee6-0d42-ef9c-017dc7179a0c" testName="BigFish.Tests.UnitTests.ArchiveTraversalIsRejected" computerName="622748018ee4" duration="00:00:00.0087917" startTime="2026-10-28T20:21:47.7767061+08:00" endTime="2026-10-28T20:21:47.7767623+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="971e79a9-ed96-4600-81e0-f2aa4d9ce4ef" />
+    <UnitTestResult executionId="18aae5c9-bb69-4a3f-b4ff-92e3be8dba83" testId="4c7b6753-c6f1-ec7c-a4ad-c12458358a54" testName="BigFish.Tests.IntegrationTests.DetectorExecutesNodeAndNpmInsteadOfTrustingFiles" computerName="622748018ee4" duration="00:00:00.0325080" startTime="2026-10-28T20:21:47.6213825+08:00" endTime="2026-10-28T20:21:47.6890188+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="18aae5c9-bb69-4a3f-b4ff-92e3be8dba83" />
+    <UnitTestResult executionId="31786242-44c5-41cd-83f5-e4d3108f2282" testId="bcbd0982-38b1-228a-46ec-ef3875834172" testName="BigFish.Tests.UnitTests.ErrorCategoriesAreActionable" computerName="622748018ee4" duration="00:00:00.0005997" startTime="2026-10-28T20:21:47.7812479+08:00" endTime="2026-10-28T20:21:47.7813115+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="31786242-44c5-41cd-83f5-e4d3108f2282" />
+    <UnitTestResult executionId="0d7ac127-222e-4f88-97fe-bfa6026b3fe8" testId="7ee285f6-dc35-03bd-6e55-1f32bc4a8a73" testName="BigFish.Tests.UnitTests.LaunchUriMustBeLocal(url: &quot;http://127.0.0.1:3080/?token=secret&quot;, valid: True)" computerName="622748018ee4" duration="00:00:00.0003398" startTime="2026-10-28T20:21:47.7768974+08:00" endTime="2026-10-28T20:21:47.7769410+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0d7ac127-222e-4f88-97fe-bfa6026b3fe8" />
+    <UnitTestResult executionId="b0f0df93-a89d-4d32-981c-3fe2a267db84" testId="9761ec21-4818-9901-89b9-fe6c1eab4e0f" testName="BigFish.Tests.UnitTests.ParseNode(text: &quot;node version 24.9.0&quot;, parsed: False, supported: False)" computerName="622748018ee4" duration="00:00:00.0082728" startTime="2026-10-28T20:21:47.7032940+08:00" endTime="2026-10-28T20:21:47.7033481+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b0f0df93-a89d-4d32-981c-3fe2a267db84" />
+    <UnitTestResult executionId="2b149342-9f5a-4fd4-920d-6992559980f0" testId="40da079a-d8c0-fb0b-0511-143b5bd03b9c" testName="BigFish.Tests.UnitTests.LaunchUriMustBeLocal(url: &quot;https://127.0.0.1:3080/?token=secret&quot;, valid: False)" computerName="622748018ee4" duration="00:00:00.0000147" startTime="2026-10-28T20:21:47.7771328+08:00" endTime="2026-10-28T20:21:47.7772168+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2b149342-9f5a-4fd4-920d-6992559980f0" />
+    <UnitTestResult executionId="fbeca687-ae3f-4d69-a743-472b35d6c006" testId="da39602f-28d5-7509-42a1-710a4dd77af4" testName="BigFish.Tests.UnitTests.CompatibilityIsAnExactReviewedPair" computerName="622748018ee4" duration="00:00:00.0186948" startTime="2026-10-28T20:21:47.7774497+08:00" endTime="2026-10-28T20:21:47.7774940+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fbeca687-ae3f-4d69-a743-472b35d6c006" />
+    <UnitTestResult executionId="64d61462-d36d-4167-9fa5-8a1a4c94cf50" testId="83e7060c-e7a4-e549-de29-881b65922b02" testName="BigFish.Tests.UnitTests.CancellationDoesNotReplaceAtomicFile" computerName="622748018ee4" duration="00:00:00.0076888" startTime="2026-10-28T20:21:47.7817364+08:00" endTime="2026-10-28T20:21:47.7817848+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="64d61462-d36d-4167-9fa5-8a1a4c94cf50" />
+    <UnitTestResult executionId="957e40c3-369b-4934-bf25-a622cd9ce77b" testId="ac8e8240-3ad8-300e-9230-2eaff90d5424" testName="BigFish.Tests.IntegrationTests.ProgressCountsOnlyExecutedStages(im: True, expected: 5)" computerName="622748018ee4" duration="00:00:00.1125685" startTime="2026-10-28T20:21:47.7032385+08:00" endTime="2026-10-28T20:21:47.7899071+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="957e40c3-369b-4934-bf25-a622cd9ce77b" />
+    <UnitTestResult executionId="68c08310-5e17-4f24-97ce-3c5c745720c5" testId="8e0bcd5e-408a-09f9-00ed-edfc19bb4c1e" testName="BigFish.Tests.UnitTests.ExternalDshReferenceMustBeAbsolute" computerName="622748018ee4" duration="00:00:00.0367145" startTime="2026-10-28T20:21:47.6235165+08:00" endTime="2026-10-28T20:21:47.6784363+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="68c08310-5e17-4f24-97ce-3c5c745720c5" />
+    <UnitTestResult executionId="12d76215-14ff-4361-8a47-ce1ec358c5d2" testId="7f4e81dd-9710-2a2f-df3e-9b6be383a070" testName="BigFish.Tests.UnitTests.ParseNode(text: &quot;22.19.0&quot;, parsed: True, supported: False)" computerName="622748018ee4" duration="00:00:00.0000044" startTime="2026-10-28T20:21:47.7760205+08:00" endTime="2026-10-28T20:21:47.7760691+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="12d76215-14ff-4361-8a47-ce1ec358c5d2" />
+    <UnitTestResult executionId="09463c96-99e9-4cc1-bba7-b5bceb375911" testId="c127d1c5-4b6b-0f52-a9c8-11b20f97ebc3" testName="BigFish.Tests.UnitTests.ParseNode(text: &quot;25.0.0&quot;, parsed: True, supported: False)" computerName="622748018ee4" duration="00:00:00.0000034" startTime="2026-10-28T20:21:47.7043654+08:00" endTime="2026-10-28T20:21:47.7044145+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="09463c96-99e9-4cc1-bba7-b5bceb375911" />
+    <UnitTestResult executionId="7043c17b-6b2f-4bf4-8ca3-27c73a5fbc30" testId="c55fabcd-fb2c-a9a0-d0b9-6bbaeb52a37f" testName="BigFish.Tests.IntegrationTests.OccupiedPortUsesOsAssignmentWithoutKillingOwner" computerName="622748018ee4" duration="00:00:00.0088627" startTime="2026-10-28T20:21:48.8523561+08:00" endTime="2026-10-28T20:21:48.8611944+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7043c17b-6b2f-4bf4-8ca3-27c73a5fbc30" />
+    <UnitTestResult executionId="64a17729-4d0b-417a-948c-5e474dee4523" testId="bcf8e4a8-2ae2-a9fb-6ff0-1df1acdde2e4" testName="BigFish.Tests.UnitTests.LaunchUriMustBeLocal(url: &quot;http://evil@127.0.0.1:3080/?token=secret&quot;, valid: False)" computerName="622748018ee4" duration="00:00:00.0003907" startTime="2026-10-28T20:21:47.7770173+08:00" endTime="2026-10-28T20:21:47.7770664+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="64a17729-4d0b-417a-948c-5e474dee4523" />
+    <UnitTestResult executionId="ca6271a3-2a2f-43b4-a644-4de09685a7a7" testId="5f031d50-20c4-0de7-e448-29db51a8f1d0" testName="BigFish.Tests.IntegrationTests.ActualSilentChildHitsReadinessTimeoutAndIsStopped" computerName="622748018ee4" duration="00:00:00.6176419" startTime="2026-10-28T20:21:51.9140473+08:00" endTime="2026-10-28T20:21:52.5321009+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ca6271a3-2a2f-43b4-a644-4de09685a7a7" />
+    <UnitTestResult executionId="000774b5-40cf-4f17-828d-d2c61193046c" testId="5c2d8c9a-193a-5e28-51ed-63e161ca6309" testName="BigFish.Tests.IntegrationTests.EmptyCompleteAndPartialEnvironments(node: True, dsh: True, im: False, n: 0, d: 0, i: 1)" computerName="622748018ee4" duration="00:00:00.0066724" startTime="2026-10-28T20:21:48.8708043+08:00" endTime="2026-10-28T20:21:48.8779523+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="000774b5-40cf-4f17-828d-d2c61193046c" />
+    <UnitTestResult executionId="56ff4019-741d-4291-843a-f1569c9ea447" testId="549857f7-5dcb-cba2-c386-eb88bcb3e80a" testName="BigFish.Tests.IntegrationTests.DownloadRetryIsBounded" computerName="622748018ee4" duration="00:00:03.0015465" startTime="2026-10-28T20:21:48.9121446+08:00" endTime="2026-10-28T20:21:51.9129476+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="56ff4019-741d-4291-843a-f1569c9ea447" />
+    <UnitTestResult executionId="ce41a25c-af3c-4c82-8256-c476346e5b72" testId="ab2e95cb-16cd-51c9-c1db-66c20f649ac1" testName="BigFish.Tests.IntegrationTests.DownloadsRetryVerifyCacheAndRejectCorruption" computerName="622748018ee4" duration="00:00:01.0347178" startTime="2026-10-28T20:21:47.8166529+08:00" endTime="2026-10-28T20:21:48.8519752+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ce41a25c-af3c-4c82-8256-c476346e5b72" />
+    <UnitTestResult executionId="38988828-9e72-442d-80dd-ca767701a5e6" testId="38133c29-4aed-f1b2-5ca9-3bab4db3ae6c" testName="BigFish.Tests.UnitTests.ProfileBackupAndSafeDefaultsNeverOverwriteUserData" computerName="622748018ee4" duration="00:00:00.0121213" startTime="2026-10-28T20:21:47.8235513+08:00" endTime="2026-10-28T20:21:47.8364102+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="38988828-9e72-442d-80dd-ca767701a5e6" />
+    <UnitTestResult executionId="58dae141-5591-43a9-ad39-e0454d0decf7" testId="3c0d6f23-d9a0-2859-51be-788b425a87d3" testName="BigFish.Tests.UnitTests.ParseNode(text: &quot;24.9.0&quot;, parsed: True, supported: True)" computerName="622748018ee4" duration="00:00:00.0000111" startTime="2026-10-28T20:21:47.7041927+08:00" endTime="2026-10-28T20:21:47.7042465+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="58dae141-5591-43a9-ad39-e0454d0decf7" />
+    <UnitTestResult executionId="fb8de293-aa22-4963-b7a3-9b56be053708" testId="30eb7fd2-fa4e-85b2-c9a7-00f5fa8ebf4c" testName="BigFish.Tests.UnitTests.DependencyDecisionProtectsOldSystemNode" computerName="622748018ee4" duration="00:00:00.0097075" startTime="2026-10-28T20:21:47.8059303+08:00" endTime="2026-10-28T20:21:47.8147929+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fb8de293-aa22-4963-b7a3-9b56be053708" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="BigFish.Tests.IntegrationTests.OccupiedPortUsesOsAssignmentWithoutKillingOwner" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="c55fabcd-fb2c-a9a0-d0b9-6bbaeb52a37f">
+      <Execution id="7043c17b-6b2f-4bf4-8ca3-27c73a5fbc30" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="OccupiedPortUsesOsAssignmentWithoutKillingOwner" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.UntrustedDownloadSourcesAreRejected" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="781f71bc-e801-7d12-0653-5e2b58544675">
+      <Execution id="c5b1bbc7-4957-4beb-af23-474a61c1f319" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="UntrustedDownloadSourcesAreRejected" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.ExternalDshReferenceMustBeAbsolute" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="8e0bcd5e-408a-09f9-00ed-edfc19bb4c1e">
+      <Execution id="68c08310-5e17-4f24-97ce-3c5c745720c5" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="ExternalDshReferenceMustBeAbsolute" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.IntegrationTests.ProgressCountsOnlyExecutedStages(im: False, expected: 4)" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="d30bfa21-fc59-6d88-01bc-ede3bf72d0ef">
+      <Execution id="2e6d87cf-98f0-4030-abf8-b40896df559b" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="ProgressCountsOnlyExecutedStages" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.CommandsUseArgumentListWithoutShellExpansion" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="df767dc6-7452-c15e-6428-f20e57f4fedf">
+      <Execution id="33a3815f-dcb1-4f08-b7ec-51d0741c711a" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="CommandsUseArgumentListWithoutShellExpansion" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.IntegrationTests.EmptyCompleteAndPartialEnvironments(node: True, dsh: True, im: True, n: 0, d: 0, i: 0)" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="b2c2d9d0-00da-4dd8-d142-b75adddce312">
+      <Execution id="5bf7b259-6f15-4968-9c7e-3e5b7dd6535e" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="EmptyCompleteAndPartialEnvironments" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.IntegrationTests.EmptyCompleteAndPartialEnvironments(node: True, dsh: True, im: False, n: 0, d: 0, i: 1)" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="5c2d8c9a-193a-5e28-51ed-63e161ca6309">
+      <Execution id="000774b5-40cf-4f17-828d-d2c61193046c" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="EmptyCompleteAndPartialEnvironments" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.LaunchUriMustBeLocal(url: &quot;https://127.0.0.1:3080/?token=secret&quot;, valid: False)" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="40da079a-d8c0-fb0b-0511-143b5bd03b9c">
+      <Execution id="2b149342-9f5a-4fd4-920d-6992559980f0" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="LaunchUriMustBeLocal" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.IntegrationTests.UnrelatedHttpServerIsNotDsh" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="f82103f8-967a-4fe6-d20b-13079ce39e2a">
+      <Execution id="4c7dd8d8-b63e-4a52-8630-12ce35e55de3" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="UnrelatedHttpServerIsNotDsh" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.ParseNode(text: &quot;&quot;, parsed: False, supported: False)" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="89a43f65-acbe-9853-f435-85d686b9d4a4">
+      <Execution id="8181201b-0d4e-4072-a6f5-6979bceb17bc" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="ParseNode" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.IntegrationTests.FailedInstallResumesAndRepeatDoesNotReinstall" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="e305cc9f-34fc-659b-f060-e4a5a9ae95a9">
+      <Execution id="19478da9-4653-4bca-b466-ea50b80fea26" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="FailedInstallResumesAndRepeatDoesNotReinstall" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.IntegrationTests.FailedProcessLaunchReleasesServiceOwnership" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="31232784-c6e0-7023-608d-c07d33049283">
+      <Execution id="6bb3a5d2-93e2-4443-a370-3abc6dcf6446" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="FailedProcessLaunchReleasesServiceOwnership" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.IntegrationTests.StartupTimeoutDoesNotReportSuccess" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="a65d97fb-beb6-3185-e780-3720d61d86e2">
+      <Execution id="cd379005-3a7c-4871-b19b-5f696b1b25fe" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="StartupTimeoutDoesNotReportSuccess" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.ParseNode(text: &quot;v24.8.9&quot;, parsed: True, supported: False)" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="3d612a36-8cd8-234d-086a-db62bd4c9d72">
+      <Execution id="6f8abaa9-9ec3-4cc1-b0f3-c48bf972f6d5" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="ParseNode" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.IntegrationTests.ActualChildProcessCancellationTerminatesPromptly" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="0e898b47-f170-660f-3831-0a7387cd327b">
+      <Execution id="ea0d3737-4855-4127-86df-787601bfdd3a" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="ActualChildProcessCancellationTerminatesPromptly" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.ParseNode(text: &quot;22.19.0&quot;, parsed: True, supported: False)" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="7f4e81dd-9710-2a2f-df3e-9b6be383a070">
+      <Execution id="12d76215-14ff-4361-8a47-ce1ec358c5d2" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="ParseNode" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.IntegrationTests.DetectorExecutesNodeAndNpmInsteadOfTrustingFiles" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="4c7b6753-c6f1-ec7c-a4ad-c12458358a54">
+      <Execution id="18aae5c9-bb69-4a3f-b4ff-92e3be8dba83" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="DetectorExecutesNodeAndNpmInsteadOfTrustingFiles" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.ParseNode(text: &quot;24.9.0&quot;, parsed: True, supported: True)" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="3c0d6f23-d9a0-2859-51be-788b425a87d3">
+      <Execution id="58dae141-5591-43a9-ad39-e0454d0decf7" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="ParseNode" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.LaunchUriMustBeLocal(url: &quot;http://127.0.0.1:3080/?token=secret&quot;, valid: True)" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="7ee285f6-dc35-03bd-6e55-1f32bc4a8a73">
+      <Execution id="0d7ac127-222e-4f88-97fe-bfa6026b3fe8" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="LaunchUriMustBeLocal" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.IntegrationTests.EmptyCompleteAndPartialEnvironments(node: False, dsh: False, im: False, n: 1, d: 1, i: 1)" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="21322eb1-8de4-c847-10a4-0f0ccea6dbe6">
+      <Execution id="bfa9a976-9c3e-4c9d-8cb1-08b5369640f4" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="EmptyCompleteAndPartialEnvironments" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.OperationLockRejectsConcurrentInstaller" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="9a349a9f-4d86-b51c-179a-f9e19d1354e4">
+      <Execution id="53fb183c-e336-4484-85c4-9f08a2b0c8f9" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="OperationLockRejectsConcurrentInstaller" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.CancellationDoesNotReplaceAtomicFile" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="83e7060c-e7a4-e549-de29-881b65922b02">
+      <Execution id="64d61462-d36d-4167-9fa5-8a1a4c94cf50" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="CancellationDoesNotReplaceAtomicFile" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.LaunchUriMustBeLocal(url: &quot;http://example.com:3080/?token=secret&quot;, valid: False)" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="067d78a9-4124-82c4-002d-e3c2c3acf572">
+      <Execution id="b60db067-5dc2-4793-bec4-e4301506f5dd" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="LaunchUriMustBeLocal" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.IntegrationTests.NetworkTimeoutIsNotReportedAsUserCancellation" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="397f9f3a-8ddc-6430-dc85-a590e0304ab3">
+      <Execution id="68216734-27c1-479a-9588-474aecffb66a" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="NetworkTimeoutIsNotReportedAsUserCancellation" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.CompatibilityIsAnExactReviewedPair" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="da39602f-28d5-7509-42a1-710a4dd77af4">
+      <Execution id="fbeca687-ae3f-4d69-a743-472b35d6c006" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="CompatibilityIsAnExactReviewedPair" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.LaunchUriMustBeLocal(url: &quot;http://evil@127.0.0.1:3080/?token=secret&quot;, valid: False)" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="bcf8e4a8-2ae2-a9fb-6ff0-1df1acdde2e4">
+      <Execution id="64a17729-4d0b-417a-948c-5e474dee4523" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="LaunchUriMustBeLocal" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.IntegrationTests.CancelledInstallDoesNotExecuteLaterStages" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="7aefb8b1-5dd5-0883-bf4f-083a8ecf7a3c">
+      <Execution id="19a5307c-6924-42ae-ba26-955ebdd08ef7" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="CancelledInstallDoesNotExecuteLaterStages" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.IntegrationTests.OptionalFailurePreservesBaseCheckpoint" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="6a028c5c-6400-884a-2470-177c24340ff5">
+      <Execution id="242a3fd7-3eb8-4613-afa7-841d0a5ef106" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="OptionalFailurePreservesBaseCheckpoint" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.ParseNode(text: &quot;25.0.0&quot;, parsed: True, supported: False)" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="c127d1c5-4b6b-0f52-a9c8-11b20f97ebc3">
+      <Execution id="09463c96-99e9-4cc1-bba7-b5bceb375911" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="ParseNode" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.ErrorCategoriesAreActionable" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="bcbd0982-38b1-228a-46ec-ef3875834172">
+      <Execution id="31786242-44c5-41cd-83f5-e4d3108f2282" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="ErrorCategoriesAreActionable" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.ParseNode(text: &quot;v24.9.0-rc.1&quot;, parsed: False, supported: False)" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="14311442-bb45-5430-aecd-1bf83f0dc482">
+      <Execution id="2cd66b9b-7cb8-4f25-a319-0cfb2cc8444b" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="ParseNode" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.IntegrationTests.RealLocalHttpAuthenticationAndPluginReadiness" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="c62715b2-0c5d-0c81-92ee-9c3aff67bad2">
+      <Execution id="88bf5787-29e1-410f-9190-aa36fb17d8e9" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="RealLocalHttpAuthenticationAndPluginReadiness" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.IntegrationTests.EmptyCompleteAndPartialEnvironments(node: True, dsh: False, im: False, n: 0, d: 1, i: 1)" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="92e5ecad-c873-d03f-fda7-12fc1ea84b9b">
+      <Execution id="72c95ef7-cb2d-4329-9e70-ffd533f1e6cb" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="EmptyCompleteAndPartialEnvironments" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.ParseNode(text: &quot;v999999999999999.0.0&quot;, parsed: False, supported: False)" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="c0cc4a93-411c-8faf-d215-593e9ddae4cf">
+      <Execution id="eaf6404f-ebf6-4a9e-8576-fd668b862edb" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="ParseNode" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.SecretsAreRedacted" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="68f7a3e0-8433-f600-9552-237c0171dd2b">
+      <Execution id="982c72b4-251d-4134-afb5-c0af37fe4723" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="SecretsAreRedacted" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.ArchiveTraversalIsRejected" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="839bf902-2ee6-0d42-ef9c-017dc7179a0c">
+      <Execution id="971e79a9-ed96-4600-81e0-f2aa4d9ce4ef" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="ArchiveTraversalIsRejected" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.ProfileBackupAndSafeDefaultsNeverOverwriteUserData" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="38133c29-4aed-f1b2-5ca9-3bab4db3ae6c">
+      <Execution id="38988828-9e72-442d-80dd-ca767701a5e6" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="ProfileBackupAndSafeDefaultsNeverOverwriteUserData" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.IntegrationTests.DownloadsRetryVerifyCacheAndRejectCorruption" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="ab2e95cb-16cd-51c9-c1db-66c20f649ac1">
+      <Execution id="ce41a25c-af3c-4c82-8256-c476346e5b72" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="DownloadsRetryVerifyCacheAndRejectCorruption" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.IntegrationTests.ProgressCountsOnlyExecutedStages(im: True, expected: 5)" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="ac8e8240-3ad8-300e-9230-2eaff90d5424">
+      <Execution id="957e40c3-369b-4934-bf25-a622cd9ce77b" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="ProgressCountsOnlyExecutedStages" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.IntegrationTests.DownloadRetryIsBounded" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="549857f7-5dcb-cba2-c386-eb88bcb3e80a">
+      <Execution id="56ff4019-741d-4291-843a-f1569c9ea447" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="DownloadRetryIsBounded" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.ParseNode(text: &quot;node version 24.9.0&quot;, parsed: False, supported: False)" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="9761ec21-4818-9901-89b9-fe6c1eab4e0f">
+      <Execution id="b0f0df93-a89d-4d32-981c-3fe2a267db84" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="ParseNode" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.ParseNode(text: &quot;v24.22.1&quot;, parsed: True, supported: True)" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="63963b49-932b-885e-dd36-28f9028be8ac">
+      <Execution id="6ca5e074-08d2-4d7a-bed8-866ed620e11a" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="ParseNode" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.DependencyDecisionProtectsOldSystemNode" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="30eb7fd2-fa4e-85b2-c9a7-00f5fa8ebf4c">
+      <Execution id="fb8de293-aa22-4963-b7a3-9b56be053708" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="DependencyDecisionProtectsOldSystemNode" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.PathsPreserveUnicodeAndRejectTraversal" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="6295f1c7-445d-8768-29bc-175c074079f8">
+      <Execution id="86523129-7b77-4301-8224-6e647de57a3c" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="PathsPreserveUnicodeAndRejectTraversal" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.UnitTests.StateRoundtripAndInterruptedStageRecovery" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="f3898f0d-f7ea-943e-8789-d6b57b4d2f6c">
+      <Execution id="0a57cc06-b335-4a6c-afac-b6452bd85409" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.UnitTests" name="StateRoundtripAndInterruptedStageRecovery" />
+    </UnitTest>
+    <UnitTest name="BigFish.Tests.IntegrationTests.ActualSilentChildHitsReadinessTimeoutAndIsStopped" storage="/workspace/scratch/ed9e9964dcd6/tests/bigfish.tests/bin/release/net10.0/bigfish.tests.dll" id="5f031d50-20c4-0de7-e448-29db51a8f1d0">
+      <Execution id="ca6271a3-2a2f-43b4-a644-4de09685a7a7" />
+      <TestMethod codeBase="/workspace/scratch/ed9e9964dcd6/tests/BigFish.Tests/bin/Release/net10.0/BigFish.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="BigFish.Tests.IntegrationTests" name="ActualSilentChildHitsReadinessTimeoutAndIsStopped" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="a65d97fb-beb6-3185-e780-3720d61d86e2" executionId="cd379005-3a7c-4871-b19b-5f696b1b25fe" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="067d78a9-4124-82c4-002d-e3c2c3acf572" executionId="b60db067-5dc2-4793-bec4-e4301506f5dd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="397f9f3a-8ddc-6430-dc85-a590e0304ab3" executionId="68216734-27c1-479a-9588-474aecffb66a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e305cc9f-34fc-659b-f060-e4a5a9ae95a9" executionId="19478da9-4653-4bca-b466-ea50b80fea26" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="31232784-c6e0-7023-608d-c07d33049283" executionId="6bb3a5d2-93e2-4443-a370-3abc6dcf6446" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7aefb8b1-5dd5-0883-bf4f-083a8ecf7a3c" executionId="19a5307c-6924-42ae-ba26-955ebdd08ef7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d30bfa21-fc59-6d88-01bc-ede3bf72d0ef" executionId="2e6d87cf-98f0-4030-abf8-b40896df559b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="21322eb1-8de4-c847-10a4-0f0ccea6dbe6" executionId="bfa9a976-9c3e-4c9d-8cb1-08b5369640f4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="68f7a3e0-8433-f600-9552-237c0171dd2b" executionId="982c72b4-251d-4134-afb5-c0af37fe4723" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c62715b2-0c5d-0c81-92ee-9c3aff67bad2" executionId="88bf5787-29e1-410f-9190-aa36fb17d8e9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3d612a36-8cd8-234d-086a-db62bd4c9d72" executionId="6f8abaa9-9ec3-4cc1-b0f3-c48bf972f6d5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="14311442-bb45-5430-aecd-1bf83f0dc482" executionId="2cd66b9b-7cb8-4f25-a319-0cfb2cc8444b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6295f1c7-445d-8768-29bc-175c074079f8" executionId="86523129-7b77-4301-8224-6e647de57a3c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f3898f0d-f7ea-943e-8789-d6b57b4d2f6c" executionId="0a57cc06-b335-4a6c-afac-b6452bd85409" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="df767dc6-7452-c15e-6428-f20e57f4fedf" executionId="33a3815f-dcb1-4f08-b7ec-51d0741c711a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f82103f8-967a-4fe6-d20b-13079ce39e2a" executionId="4c7dd8d8-b63e-4a52-8630-12ce35e55de3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="63963b49-932b-885e-dd36-28f9028be8ac" executionId="6ca5e074-08d2-4d7a-bed8-866ed620e11a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c0cc4a93-411c-8faf-d215-593e9ddae4cf" executionId="eaf6404f-ebf6-4a9e-8576-fd668b862edb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6a028c5c-6400-884a-2470-177c24340ff5" executionId="242a3fd7-3eb8-4613-afa7-841d0a5ef106" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="89a43f65-acbe-9853-f435-85d686b9d4a4" executionId="8181201b-0d4e-4072-a6f5-6979bceb17bc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="92e5ecad-c873-d03f-fda7-12fc1ea84b9b" executionId="72c95ef7-cb2d-4329-9e70-ffd533f1e6cb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b2c2d9d0-00da-4dd8-d142-b75adddce312" executionId="5bf7b259-6f15-4968-9c7e-3e5b7dd6535e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0e898b47-f170-660f-3831-0a7387cd327b" executionId="ea0d3737-4855-4127-86df-787601bfdd3a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9a349a9f-4d86-b51c-179a-f9e19d1354e4" executionId="53fb183c-e336-4484-85c4-9f08a2b0c8f9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="781f71bc-e801-7d12-0653-5e2b58544675" executionId="c5b1bbc7-4957-4beb-af23-474a61c1f319" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="839bf902-2ee6-0d42-ef9c-017dc7179a0c" executionId="971e79a9-ed96-4600-81e0-f2aa4d9ce4ef" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4c7b6753-c6f1-ec7c-a4ad-c12458358a54" executionId="18aae5c9-bb69-4a3f-b4ff-92e3be8dba83" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bcbd0982-38b1-228a-46ec-ef3875834172" executionId="31786242-44c5-41cd-83f5-e4d3108f2282" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7ee285f6-dc35-03bd-6e55-1f32bc4a8a73" executionId="0d7ac127-222e-4f88-97fe-bfa6026b3fe8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9761ec21-4818-9901-89b9-fe6c1eab4e0f" executionId="b0f0df93-a89d-4d32-981c-3fe2a267db84" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="40da079a-d8c0-fb0b-0511-143b5bd03b9c" executionId="2b149342-9f5a-4fd4-920d-6992559980f0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="da39602f-28d5-7509-42a1-710a4dd77af4" executionId="fbeca687-ae3f-4d69-a743-472b35d6c006" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="83e7060c-e7a4-e549-de29-881b65922b02" executionId="64d61462-d36d-4167-9fa5-8a1a4c94cf50" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ac8e8240-3ad8-300e-9230-2eaff90d5424" executionId="957e40c3-369b-4934-bf25-a622cd9ce77b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8e0bcd5e-408a-09f9-00ed-edfc19bb4c1e" executionId="68c08310-5e17-4f24-97ce-3c5c745720c5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7f4e81dd-9710-2a2f-df3e-9b6be383a070" executionId="12d76215-14ff-4361-8a47-ce1ec358c5d2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c127d1c5-4b6b-0f52-a9c8-11b20f97ebc3" executionId="09463c96-99e9-4cc1-bba7-b5bceb375911" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c55fabcd-fb2c-a9a0-d0b9-6bbaeb52a37f" executionId="7043c17b-6b2f-4bf4-8ca3-27c73a5fbc30" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bcf8e4a8-2ae2-a9fb-6ff0-1df1acdde2e4" executionId="64a17729-4d0b-417a-948c-5e474dee4523" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5f031d50-20c4-0de7-e448-29db51a8f1d0" executionId="ca6271a3-2a2f-43b4-a644-4de09685a7a7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5c2d8c9a-193a-5e28-51ed-63e161ca6309" executionId="000774b5-40cf-4f17-828d-d2c61193046c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="549857f7-5dcb-cba2-c386-eb88bcb3e80a" executionId="56ff4019-741d-4291-843a-f1569c9ea447" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ab2e95cb-16cd-51c9-c1db-66c20f649ac1" executionId="ce41a25c-af3c-4c82-8256-c476346e5b72" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="38133c29-4aed-f1b2-5ca9-3bab4db3ae6c" executionId="38988828-9e72-442d-80dd-ca767701a5e6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3c0d6f23-d9a0-2859-51be-788b425a87d3" executionId="58dae141-5591-43a9-ad39-e0454d0decf7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="30eb7fd2-fa4e-85b2-c9a7-00f5fa8ebf4c" executionId="fb8de293-aa22-4963-b7a3-9b56be053708" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="46" executed="46" passed="46" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET 10.0.14)
+[xUnit.net 00:00:00.17]   Discovering: BigFish.Tests
+[xUnit.net 00:00:00.26]   Discovered:  BigFish.Tests
+[xUnit.net 00:00:00.31]   Starting:    BigFish.Tests
+[xUnit.net 00:00:08.82]   Finished:    BigFish.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

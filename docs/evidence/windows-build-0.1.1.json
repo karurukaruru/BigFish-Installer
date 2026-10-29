@@ -1,0 +1,22 @@
+{
+  "version": "0.1.1",
+  "crossCompiled": true,
+  "windowsExecuted": false,
+  "selfContained": true,
+  "artifacts": [
+    {
+      "name": "BigFish-CN.exe",
+      "bytes": 65020048,
+      "sha256": "81fe753e37a3e8394494a3fcacb5da21a83a57bff3dd6045fe665d2ea0bed86a",
+      "architecture": "PE32+ x64 Windows GUI",
+      "defaultRegion": "cn"
+    },
+    {
+      "name": "BigFish-Global.exe",
+      "bytes": 65020048,
+      "sha256": "cbf0796f7dcdcb321b20ba44d73d3d4cc3356003bb16e56511a3cc38e058dfb1",
+      "architecture": "PE32+ x64 Windows GUI",
+      "defaultRegion": "global"
+    }
+  ]
+}

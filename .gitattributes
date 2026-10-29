@@ -1,0 +1,8 @@
+# Preserve upstream license/notice bytes, including their original CRLF and spacing.
+third-party/** -text -whitespace
+*.cs text eol=lf
+*.xaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+assets/licenses/** -text -whitespace
+installer/Languages/** -text -whitespace

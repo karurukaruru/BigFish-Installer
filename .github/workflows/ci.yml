@@ -1,0 +1,50 @@
+name: Build and test
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  unit-integration:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.22.1'
+      - run: dotnet test tests/BigFish.Tests -c Release --logger "trx;LogFileName=tests.trx" --results-directory artifacts/test-results
+      - run: dotnet build BigFish.sln -c Release
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-${{ matrix.os }}
+          path: artifacts/test-results
+  windows-real-install:
+    strategy:
+      matrix:
+        region: [cn, global]
+    runs-on: windows-2025
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - shell: pwsh
+        run: |
+          dotnet publish src/BigFish.App -c Release -r win-x64 --self-contained true -p:BigFishDownloadRegion=${{ matrix.region }} -o artifacts/channels/${{ matrix.region }}
+          if ($LASTEXITCODE -ne 0) { throw 'Publish failed' }
+          ./scripts/windows-acceptance.ps1 -Region ${{ matrix.region }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-acceptance-${{ matrix.region }}
+          path: artifacts/acceptance

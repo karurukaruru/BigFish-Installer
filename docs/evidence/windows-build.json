@@ -1,0 +1,9 @@
+{
+  "file": "artifacts/portable/BigFish.exe",
+  "bytes": 65020205,
+  "sha256": "3a27339012ec2294d63aaa2b6b426df221676d98d7796513856b2ee590045ad2",
+  "format": "PE32+ GUI x86-64",
+  "sdk": "10.0.403",
+  "builtOn": "Linux x64",
+  "executedOnWindows": false
+}

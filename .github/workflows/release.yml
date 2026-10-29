@@ -1,0 +1,56 @@
+name: Build release candidate
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: windows-2025
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.22.1'
+      - shell: pwsh
+        run: |
+          if (!(Test-Path "${env:ProgramFiles(x86)}/Inno Setup 6/ISCC.exe")) { choco install innosetup --no-progress -y }
+          ./scripts/build.ps1 -Setup -Region all
+          foreach ($region in @('cn','global')) {
+            ./scripts/windows-acceptance.ps1 -Region $region
+            $label = if ($region -eq 'cn') { 'CN' } else { 'Global' }
+            $dest = Join-Path $env:RUNNER_TEMP "BigFish-installed-$region"
+            $p = Start-Process "artifacts/release/BigFishSetup-$label.exe" -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',('/DIR="' + $dest + '"')) -Wait -PassThru
+            if ($p.ExitCode -ne 0 -or !(Test-Path (Join-Path $dest 'BigFish.exe'))) { throw 'Setup acceptance failed' }
+            $report = Join-Path $PWD "artifacts/acceptance/$region/installed-ui.json"
+            $p = Start-Process (Join-Path $dest 'BigFish.exe') -ArgumentList @('--self-test', ('"' + $report + '"')) -Wait -PassThru
+            if ($p.ExitCode -ne 0) { throw 'Installed WPF self-test failed' }
+          }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BigFish-release-candidate
+          path: |
+            artifacts/release/*
+            artifacts/acceptance
+            artifacts/test-results
+  draft-release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: BigFish-release-candidate
+          path: release
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: gh release create "$RELEASE_TAG" --draft --prerelease --title "BigFish $RELEASE_TAG" --notes "Windows 自动构建与基础安装验收通过；发布前仍须完成人工扫码、权限与聊天验收。" release/release/*

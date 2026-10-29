@@ -1,0 +1,17 @@
+<Project>
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Deterministic>true</Deterministic>
+    <Version>0.1.1</Version>
+    <BigFishDownloadRegion Condition="'$(BigFishDownloadRegion)' == ''">cn</BigFishDownloadRegion>
+    <Authors>BigFish Installer contributors</Authors>
+    <Copyright>Copyright (c) 2026 BigFish Installer contributors</Copyright>
+  </PropertyGroup>
+  <ItemGroup><AssemblyMetadata Include="BigFishDownloadRegion" Value="$(BigFishDownloadRegion)" /></ItemGroup>
+  <Target Name="ValidateBigFishRegion" BeforeTargets="BeforeBuild">
+    <Error Condition="'$(BigFishDownloadRegion)' != 'cn' and '$(BigFishDownloadRegion)' != 'global'" Text="BigFishDownloadRegion must be cn or global." />
+  </Target>
+</Project>

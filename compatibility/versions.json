@@ -1,0 +1,29 @@
+{
+  "checkedOn": "2026-10-28",
+  "nodeVersion": "24.22.1",
+  "nodeSha256": "d2046d28c2c3dcd211ac5145c0bf30e2047ef9dfb306693c8c6e2eccd8b95fa5",
+  "dsh": {
+    "name": "@deepseek-ai/dsh",
+    "version": "0.2.1-rc.2",
+    "integrity": "sha512-tvY+yhfKRifthbqPe/OK0AYxM5ZkvqfYq/jMYgJcEUxiRRL1Vwra3Ti5TB6AXgSWQdiPHYh/Vp6SJa9yHwMNuw==",
+    "repository": "git+https://github.com/deepseek-ai/deepseek-harness.git"
+  },
+  "im": {
+    "name": "@xmanrui/dsh-im",
+    "version": "5.7.0",
+    "integrity": "sha512-IIWKJP8SOSyGTpB81FTJrJuS57bADe7ZpX6zW4z2sevvwZuIxDexkjCGAM3kY++DBwFqzFhQVIz63e3LlxuUhQ==",
+    "repository": "git+https://github.com/xmanrui/dsh-im.git"
+  },
+  "pnpm": {
+    "name": "pnpm",
+    "version": "11.28.5",
+    "integrity": "sha512-SEVj0wtMKtJ8tIqpT/KzAtvOvI/2vyiBbCWJiG4UbOf3bzVPO8GkOOb16XaMMCqgpvet2CMpA81M+BQmy8FNng==",
+    "repository": "git+https://github.com/pnpm/pnpm.git"
+  },
+  "bili": {
+    "name": "dsh-bili-scroll",
+    "version": "2.3.0",
+    "integrity": "sha512-yQIdXbl1j1nEngD9v4YE/gtqEAY3ZFd9yon8vmavwQuO/CZgrRDl7T4z1qTYWKhnPzYdBT7SFZKdgbovLWeHNw==",
+    "repository": "git+https://github.com/c1overzz/dsh-bili-scroll.git"
+  }
+}

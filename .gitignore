@@ -1,0 +1,14 @@
+**/bin/
+**/obj/
+artifacts/
+.recovery-tools/
+recovered/
+generated_images/
+.research/
+.vs/
+.codex/
+TestResults/
+*.user
+*.pfx
+*.p12
+.tools/

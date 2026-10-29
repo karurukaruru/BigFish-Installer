@@ -1,12 +1,27 @@
-name: Build release candidate
+name: Publish two Windows EXEs
+
 on:
   push:
-    tags: ['v*']
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'scripts/**'
+      - 'compatibility/**'
+      - 'Directory.Build.props'
+      - 'BigFish.sln'
+      - '.github/workflows/release.yml'
   workflow_dispatch:
+
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: bigfish-preview-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  package:
+  build-and-verify:
     runs-on: windows-2025
     timeout-minutes: 50
     steps:
@@ -17,40 +32,69 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24.22.1'
-      - shell: pwsh
+      - name: Build, test, and check both Windows download channels
+        shell: pwsh
         run: |
-          if (!(Test-Path "${env:ProgramFiles(x86)}/Inno Setup 6/ISCC.exe")) { choco install innosetup --no-progress -y }
-          ./scripts/build.ps1 -Setup -Region all
-          foreach ($region in @('cn','global')) {
-            ./scripts/windows-acceptance.ps1 -Region $region
+          $ErrorActionPreference = 'Stop'
+          dotnet test tests/BigFish.Tests -c Release
+          if ($LASTEXITCODE -ne 0) { throw 'Unit/integration tests failed' }
+          New-Item -ItemType Directory -Force artifacts/release, artifacts/wpf-selftest | Out-Null
+          foreach ($region in @('cn', 'global')) {
             $label = if ($region -eq 'cn') { 'CN' } else { 'Global' }
-            $dest = Join-Path $env:RUNNER_TEMP "BigFish-installed-$region"
-            $p = Start-Process "artifacts/release/BigFishSetup-$label.exe" -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART',('/DIR="' + $dest + '"')) -Wait -PassThru
-            if ($p.ExitCode -ne 0 -or !(Test-Path (Join-Path $dest 'BigFish.exe'))) { throw 'Setup acceptance failed' }
-            $report = Join-Path $PWD "artifacts/acceptance/$region/installed-ui.json"
-            $p = Start-Process (Join-Path $dest 'BigFish.exe') -ArgumentList @('--self-test', ('"' + $report + '"')) -Wait -PassThru
-            if ($p.ExitCode -ne 0) { throw 'Installed WPF self-test failed' }
+            $output = "artifacts/channels/$region"
+            dotnet publish src/BigFish.App -c Release -r win-x64 --self-contained true "-p:BigFishDownloadRegion=$region" -o $output
+            if ($LASTEXITCODE -ne 0) { throw "Windows publish failed for $region" }
+            Copy-Item "$output/BigFish.exe" "artifacts/release/BigFish-$label.exe" -Force
+            ./scripts/windows-acceptance.ps1 -Region $region
+            if ($LASTEXITCODE -ne 0) { throw "Windows real-install acceptance failed for $region" }
+            $report = Join-Path $PWD "artifacts/wpf-selftest/$region.json"
+            $app = Join-Path $PWD "artifacts/release/BigFish-$label.exe"
+            $p = Start-Process -FilePath $app -ArgumentList @('--self-test', ('"' + $report + '"')) -Wait -PassThru
+            if ($p.ExitCode -ne 0 -or !(Test-Path $report)) { throw "WPF self-test failed for $region" }
+          }
+          Get-ChildItem artifacts/release/*.exe | ForEach-Object {
+            $hash = (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+            Write-Output "SHA256 $($_.Name) $hash"
           }
       - uses: actions/upload-artifact@v4
         with:
-          name: BigFish-release-candidate
+          name: BigFish-two-Windows-EXEs
           path: |
-            artifacts/release/*
-            artifacts/acceptance
-            artifacts/test-results
-  draft-release:
-    if: startsWith(github.ref, 'refs/tags/v')
-    needs: package
+            artifacts/release/BigFish-CN.exe
+            artifacts/release/BigFish-Global.exe
+          if-no-files-found: error
+
+  publish-preview:
+    needs: build-and-verify
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: BigFish-release-candidate
-          path: release
-      - env:
+          name: BigFish-two-Windows-EXEs
+          path: dist
+      - name: Publish exactly two executable downloads
+        env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          RELEASE_TAG: ${{ github.ref_name }}
-        run: gh release create "$RELEASE_TAG" --draft --prerelease --title "BigFish $RELEASE_TAG" --notes "Windows 自动构建与基础安装验收通过；发布前仍须完成人工扫码、权限与聊天验收。" release/release/*
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s dist/BigFish-CN.exe
+          test -s dist/BigFish-Global.exe
+          tag="v0.1.1-preview.${GITHUB_RUN_NUMBER}"
+          cat > release-notes.md <<'EOF'
+          ## 下载方式（Windows 10 22H2 / Windows 11 x64）
+          
+          只需下载下方 Assets 中两个 EXE **之一**：
+          - `BigFish-CN.exe`：中国地区，国内镜像优先。
+          - `BigFish-Global.exe`：其他地区，官方源优先。
+          
+          下载后直接双击，点击「一键安装」，根据引导配置自己的模型 API Key 及获得授权的 QQ/微信接入。安装过程需要联网。
+          
+          **工程预览版，尚非最终正式验收**：Windows CI 已执行基础安装、重复安装及 WPF 自测；尚未验证全新个人电脑、真实扫码和模型付费调用。EXE 当前未做代码签名，Windows 可能显示 SmartScreen 警告。请勿关闭系统安全防护。
+          
+          本项目为独立第三方工具，不是 DeepSeek、腾讯或哔哩哔哩官方产品。
+          EOF
+          gh release create "$tag" --target "$GITHUB_SHA" --title "BigFish Installer 0.1.1 Preview #${GITHUB_RUN_NUMBER}" --prerelease --notes-file release-notes.md dist/BigFish-CN.exe dist/BigFish-Global.exe

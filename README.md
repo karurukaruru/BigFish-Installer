@@ -10,7 +10,7 @@ BigFish 是 DeepSeek Harness 的第三方部署与管理工具，不是新的聊
 
 ## 下载与使用
 
-本交付没有创建远程 GitHub 仓库或线上 Release。维护者将仓库推送 GitHub 后，标签 `v*` 工作流会在 Windows 上构建、测试并生成 **草稿预发布**。人工验收后再公开发布。
+项目源码已提交到 [GitHub 仓库](https://github.com/karurukaruru/BigFish-Installer) 的 `main` 分支（当前为私有仓库）。目前尚未创建线上 Release；标签 `v*` 工作流计划在 Windows 上构建、测试并生成 **草稿预发布**。需完成人工验收后才公开发布。
 
 当前交付的 `release/BigFish-CN.exe`（中国版）和 `release/BigFish-Global.exe`（国际版）都是可直接双击的 Windows x64 自包含图形程序。它们已交叉编译，但尚未在 Windows 上运行验收。真正的 Inno 安装包 `BigFishSetup-CN.exe` / `BigFishSetup-Global.exe` 需在 Windows CI 成功后生成；目前没有公开 Release 下载链接。
 
@@ -26,7 +26,7 @@ BigFish 是 DeepSeek Harness 的第三方部署与管理工具，不是新的聊
 3. 等待真实检查与安装阶段完成。CLI、HTTP 认证和 IM RPC 通过后浏览器打开本机 DSH。
 4. 在 DSH 的设置中配置模型 API Key，再按 IM机器人 菜单扫码授权。
 
-普通用户可以完全通过 EXE 操作。尚无已发布仓库，因而不提供无法执行的下载一行命令；开发者拿到源码后可用一行构建：`pwsh -File scripts/build.ps1 -Setup -Region all`。
+普通用户可以通过已构建的 EXE 操作，但其 Windows 实机验收尚未完成。仓库已有源码、尚无公开 Release，因此暂不提供未经验证的一行下载安装命令；开发者可使用一行命令构建：`pwsh -File scripts/build.ps1 -Setup -Region all`。
 
 ## 配置模型 API Key
 

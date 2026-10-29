@@ -157,6 +157,20 @@ public sealed class DshInstaller(AppPaths paths, CompatibilityManifest manifest,
 public sealed class PluginManager(AppPaths paths, CompatibilityManifest manifest, ICommandRunner runner,
     PackageVerifier verifier, ConfigurationManager config)
 {
+    // The DSH plugin manager accepts an installation-owned package manager. Always pass
+    // our verified pnpm JS entry directly to node, rather than resolving a Windows
+    // pnpm.cmd shim through PATH (which can split paths containing spaces or '&').
+    public const string PluginLauncherSource = """
+        import { pathToFileURL } from 'node:url';
+        const [cli, pnpm, ...args] = process.argv.slice(2);
+        if (!cli || !pnpm) throw new Error('Missing DSH or pnpm entrypoint');
+        process.argv = [process.execPath, cli, ...args];
+        const { runCli } = await import(pathToFileURL(cli).href);
+        await runCli({
+          packageManager: { command: process.execPath, args: [pnpm], env: { ...process.env } }
+        });
+        """;
+
     public async Task<bool> InstalledAsync(PackagePin pin, NodeRuntime node, string release, CancellationToken ct)
     {
         // Dynamic import detects missing entrypoints/dependencies. HTTP checks later prove host activation.
@@ -177,8 +191,14 @@ public sealed class PluginManager(AppPaths paths, CompatibilityManifest manifest
         await verifier.VerifyRegistryAsync(pin, ct);
         await config.BackupProfileAsync(ct);
         // Upstream owns profile transactions. Do not force compatibility exemptions or overwrite profile YAML.
+        // Passing packageManager to runCli makes execa launch node.exe + pinned pnpm.cjs
+        // directly, with an ArgumentList even if the profile lives in a Unicode / '&' path.
+        var pnpm = Path.Combine(release, "node_modules", "pnpm", "bin", "pnpm.cjs");
+        if (!File.Exists(pnpm)) throw new BigFishException("runtime-broken", "隔离的 pnpm 入口丢失，请点击修复安装。");
+        var launcher = Path.Combine(paths.Root, "plugin-launcher.mjs");
+        await AtomicFile.WriteAsync(launcher, PluginLauncherSource, ct);
         var result = await RegistryExecution.RunAsync(paths, node, release, runner,
-            registry => [DshInstaller.Cli(release), "plugin", "--profile", "web", "add", "-w", "--save-exact", "--registry", registry, pin.Name + "@" + pin.Version], TimeSpan.FromMinutes(20), ct);
+            registry => [launcher, DshInstaller.Cli(release), pnpm, "plugin", "--profile", "web", "add", "-w", "--save-exact", "--registry", registry, pin.Name + "@" + pin.Version], TimeSpan.FromMinutes(20), ct);
         result.EnsureSuccess($"安装 {pin.Name}");
         if (!await InstalledAsync(pin, node, release, ct)) throw new BigFishException("plugin-load", $"{pin.Name} 无法导入。配置备份已保留。");
     }

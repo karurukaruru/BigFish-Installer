@@ -1,66 +1,63 @@
 <Window x:Class="BigFish.App.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="BigFish Installer" Width="980" Height="760" MinWidth="760" MinHeight="620" Background="#F4F7FB" WindowStartupLocation="CenterScreen">
+        Title="大肥鱼安装器 · BigFish" Width="920" Height="760" MinWidth="760" MinHeight="640" Background="#F4F7FB" WindowStartupLocation="CenterScreen">
   <Grid Margin="28">
     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-    <StackPanel Margin="0,0,0,22">
-      <TextBlock Text="BigFish Installer" FontSize="30" FontWeight="SemiBold" Foreground="#143352"/>
-      <TextBlock Text="DeepSeek 大肥鱼，一键部署。" FontSize="16" Foreground="#56677A" Margin="0,8,0,0"/>
+    <StackPanel Margin="0,0,0,20"><TextBlock Text="大肥鱼安装器" FontSize="30" FontWeight="SemiBold" Foreground="#143352"/>
+      <TextBlock Text="安装 → 填入 API Key → 按需要扫码绑定，然后打开 DSH 使用。" Foreground="#56677A" Margin="0,8,0,0"/>
     </StackPanel>
-    <TabControl Grid.Row="1" SelectedIndex="{Binding SelectedTab}" BorderBrush="#DCE4EF" Background="White">
-      <TabItem Header="首页与功能"><ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel Margin="28">
-        <TextBlock Text="把准备工作交给安装器" FontSize="24" FontWeight="SemiBold"/>
-        <TextBlock Text="自动检查环境，安装经过审核的 DSH 与消息插件，并启动本机管理页面。无需手动输入命令。" Foreground="#56677A" Margin="0,12,0,18"/>
-        <CheckBox Content="DeepSeek Harness（必选）" IsChecked="True" IsEnabled="False"/>
-        <CheckBox Content="QQ / 微信消息接入插件" IsChecked="{Binding InstallIm}" IsEnabled="{Binding CanEdit}"/>
-        <CheckBox Content="安装 Bilibili 视频筛选插件（可选，额外下载 Python）" IsChecked="{Binding InstallBili}" IsEnabled="{Binding CanEdit}"/>
-        <TextBlock Text="B站的自动运行、自动评论和私信在首次配置时关闭。模型密钥和平台绑定可在安装后自行决定。" Foreground="#56677A" Margin="0,6,0,20"/>
-        <WrapPanel>
-          <Button Content="一键安装" Command="{Binding InstallCommand}" Background="{StaticResource Accent}" Foreground="White" FontWeight="SemiBold" MinWidth="148"/>
-          <Button Content="检查环境" Command="{Binding CheckCommand}"/>
-          <Button Content="高级选项" Command="{Binding AdvancedCommand}"/>
-        </WrapPanel>
-        <Border Background="#EEF4FF" Padding="16" Margin="0,22,0,0"><TextBlock Text="默认仅当前用户、仅本机访问。关闭 BigFish 将停止它启动的服务；重新打开后可在管理页启动。已有系统 DSH 与历史会话不会被覆盖。"/></Border>
+    <TabControl x:Name="Steps" Grid.Row="1" SelectedIndex="{Binding SelectedTab}" Background="White" BorderBrush="#DCE4EF">
+      <TabItem Header="1  安装"><ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel Margin="26">
+        <TextBlock Text="准备运行环境" FontSize="23" FontWeight="SemiBold"/>
+        <TextBlock Text="无需手动安装 Node.js 或输入命令。已有配置和会话会保留。" Margin="0,10,0,12" Foreground="#56677A"/>
+        <CheckBox Content="DeepSeek Harness（必需）" IsChecked="True" IsEnabled="False"/>
+        <CheckBox Content="QQ / 微信消息接入" IsChecked="{Binding InstallIm}" IsEnabled="{Binding CanEdit}"/>
+        <WrapPanel><Button Content="一键安装 / 修复" Command="{Binding InstallCommand}" Background="{StaticResource Accent}" Foreground="White" MinWidth="160"/>
+          <Button Content="检查环境" Command="{Binding CheckCommand}"/><Button Content="取消" Command="{Binding CancelCommand}"/></WrapPanel>
+        <Border Background="#EEF4FF" Padding="16" Margin="0,16,0,12"><StackPanel>
+          <TextBlock Text="{Binding Stage}" FontSize="18" FontWeight="SemiBold"/>
+          <TextBlock Text="{Binding Detail}" Margin="0,8,0,10"/>
+          <ProgressBar x:Name="InstallProgressBar" Height="12" Minimum="0" Maximum="100" Value="{Binding ProgressPercent, Mode=OneWay}" IsIndeterminate="{Binding Indeterminate}"/>
+          <TextBlock Text="{Binding StepCount}" Margin="0,8,0,0"/>
+        </StackPanel></Border>
+        <TextBlock Text="百分比仅用于当前下载文件；包安装阶段显示不确定进度，完成项以实际验证为准。" Foreground="#68788A" FontSize="12"/>
+        <Expander Header="环境检查结果" Margin="0,16,0,0"><ItemsControl ItemsSource="{Binding Checks}"><ItemsControl.ItemTemplate><DataTemplate>
+          <StackPanel Margin="0,6"><TextBlock FontWeight="SemiBold"><Run Text="{Binding Component}"/><Run Text="  "/><Run Text="{Binding Status}"/></TextBlock><TextBlock Text="{Binding Detail}" Foreground="#56677A" FontSize="12"/></StackPanel>
+        </DataTemplate></ItemsControl.ItemTemplate></ItemsControl></Expander>
       </StackPanel></ScrollViewer></TabItem>
-      <TabItem Header="环境检测"><Grid Margin="20"><Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-        <ListView ItemsSource="{Binding Checks}" BorderThickness="0"><ListView.View><GridView>
-          <GridViewColumn Header="组件" Width="135" DisplayMemberBinding="{Binding Component}"/>
-          <GridViewColumn Header="状态" Width="190" DisplayMemberBinding="{Binding Status}"/>
-          <GridViewColumn Header="详情" Width="470"><GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding Detail}" Width="440"/></DataTemplate></GridViewColumn.CellTemplate></GridViewColumn>
-        </GridView></ListView.View></ListView>
-        <Button Grid.Row="1" Content="重新检查" HorizontalAlignment="Left" Command="{Binding CheckCommand}"/>
-      </Grid></TabItem>
-      <TabItem Header="安装进度"><StackPanel Margin="28">
-        <TextBlock Text="{Binding Stage}" FontSize="24" FontWeight="SemiBold"/>
-        <TextBlock Text="{Binding Detail}" Margin="0,16,0,18" Foreground="#56677A"/>
-        <ProgressBar Height="12" Minimum="0" Maximum="100" Value="{Binding ProgressPercent}" IsIndeterminate="{Binding Indeterminate}"/>
-        <TextBlock Text="{Binding StepCount}" Margin="0,14,0,18"/>
-        <WrapPanel><Button Content="查看日志" Command="{Binding LogsCommand}"/><Button Content="取消" Command="{Binding CancelCommand}"/></WrapPanel>
-        <TextBlock Text="下载百分比仅代表当前文件；无法测量的包安装阶段使用不确定进度。已完成项以实际验证通过为准。" Foreground="#68788A" Margin="0,20,0,0"/>
-      </StackPanel></TabItem>
-      <TabItem Header="使用与管理"><ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel Margin="28">
-        <TextBlock Text="{Binding ServiceStatus}" FontSize="22" FontWeight="SemiBold"/>
-        <TextBlock Text="{Binding Versions}" Foreground="#56677A" Margin="0,12,0,16"/>
+      <TabItem Header="2  模型与绑定"><ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel Margin="26">
+        <TextBlock Text="填入你的 DeepSeek API Key" FontSize="23" FontWeight="SemiBold"/>
+        <TextBlock Text="安装完成或启动服务后即可保存。只交给本机 DSH 的凭据存储，不写进 BigFish 设置或日志。" Margin="0,10,0,12" Foreground="#56677A"/>
+        <TextBlock Text="{Binding ApiStatus}"/>
+        <PasswordBox x:Name="ApiKeyInput" PasswordChanged="OnApiKeyChanged" IsEnabled="{Binding CanConfigure}" Padding="10" Margin="0,10,0,8" AutomationProperties.Name="DeepSeek API Key"/>
+        <WrapPanel><Button Content="保存 API Key" Click="OnSaveApiKey" IsEnabled="{Binding CanSaveKey}" Background="{StaticResource Accent}" Foreground="White"/>
+          <Button Content="其他服务商 / 模型设置" Command="{Binding ModelCommand}"/></WrapPanel>
+        <TextBlock Text="不填不会覆盖已有密钥。保存只确认配置成功，有效性和余额需要你在 DSH 发送消息测试。" Foreground="#68788A" FontSize="12" Margin="0,6,0,18"/>
+        <Separator/>
+        <TextBlock Text="按需要绑定 QQ 或微信" FontSize="20" FontWeight="SemiBold" Margin="0,18,0,8"/>
+        <TextBlock Text="扫码和授权在 dsh-im 原有页面完成。账号权限由平台决定，安装器不会替你授权。" Foreground="#56677A"/>
+        <WrapPanel Margin="0,8,0,8"><Button Content="绑定 QQ" Command="{Binding QqCommand}"/><Button Content="绑定微信" Command="{Binding WeChatCommand}"/><Button Content="检查连接状态" Command="{Binding TestCommand}"/></WrapPanel>
+        <TextBlock Text="{Binding Guidance}" Margin="0,4,0,16"/>
+        <Button Content="打开大肥鱼 DSH" Command="{Binding OpenWebCommand}" HorizontalAlignment="Left"/>
+      </StackPanel></ScrollViewer></TabItem>
+      <TabItem Header="使用与管理"><StackPanel Margin="26">
+        <TextBlock Text="{Binding ServiceStatus}" FontSize="23" FontWeight="SemiBold"/><TextBlock Text="{Binding Versions}" Margin="0,10,0,20" Foreground="#56677A"/>
         <WrapPanel><Button Content="启动" Command="{Binding StartCommand}"/><Button Content="停止" Command="{Binding StopCommand}"/><Button Content="重启" Command="{Binding RestartCommand}"/><Button Content="打开 DSH" Command="{Binding OpenWebCommand}"/></WrapPanel>
-        <WrapPanel><Button Content="配置 AI 模型" Command="{Binding ModelCommand}"/><Button Content="绑定 QQ" Command="{Binding QqCommand}"/><Button Content="绑定微信" Command="{Binding WeChatCommand}"/><Button Content="测试连接" Command="{Binding TestCommand}"/></WrapPanel>
-        <TextBlock Text="{Binding Guidance}" Margin="0,16,0,16"/>
-        <WrapPanel><Button Content="检查更新" Command="{Binding UpdateCommand}"/><Button Content="修复安装" Command="{Binding InstallCommand}"/><Button Content="打开工作区" Command="{Binding WorkspaceCommand}"/><Button Content="查看日志" Command="{Binding LogsCommand}"/></WrapPanel>
-        <TextBlock Text="Bilibili：安装后在 DSH 设置 → 刷B站 中扫码登录，点击「现在跑一轮」手动测试。请保持评论、回复和私信关闭，直到你明确选择启用。" Foreground="#56677A" Margin="0,16,0,0"/>
-      </StackPanel></ScrollViewer></TabItem>
-      <TabItem Header="高级选项"><StackPanel Margin="28">
-        <TextBlock Text="安装数据目录（仅新操作生效，不迁移旧数据）"/>
-        <TextBox Text="{Binding RootPath, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding CanEdit}"/>
-        <TextBlock Text="工作区目录（保留已有内容）"/>
-        <TextBox Text="{Binding WorkspacePath, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding CanEdit}"/>
-        <CheckBox Content="始终使用应用专用 Node.js，不复用系统 Node.js" IsChecked="{Binding ForcePrivateNode}" IsEnabled="{Binding CanEdit}"/>
-        <CheckBox Content="优先中国镜像（取消后使用官方源）" IsChecked="{Binding PreferChinaMirror}" IsEnabled="{Binding CanEdit}"/>
-        <Button Content="应用目录和下载源设置" Command="{Binding ApplyPathsCommand}" HorizontalAlignment="Left"/>
-        <TextBlock Text="不会修改系统 PATH，不要求管理员权限。不自动导入 ~/.dsh 的密钥或会话。版本升级只使用随 BigFish 发布的兼容清单。" Margin="0,18,0,0" Foreground="#56677A"/>
+        <WrapPanel><Button Content="修复安装" Command="{Binding InstallCommand}"/><Button Content="打开工作区" Command="{Binding WorkspaceCommand}"/><Button Content="检查更新" Command="{Binding UpdateCommand}"/></WrapPanel>
+        <TextBlock Text="关闭安装器会停止它启动的服务。下次打开后点击启动，模型配置和会话仍然保留。聊天在 DSH 中进行。" Foreground="#56677A" Margin="0,20,0,0"/>
       </StackPanel></TabItem>
-      <TabItem Header="日志"><Grid Margin="20"><Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-        <TextBox Text="{Binding Logs, Mode=OneWay}" IsReadOnly="True" FontFamily="Consolas" FontSize="12" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
-        <WrapPanel Grid.Row="1"><Button Content="打开日志文件夹" Command="{Binding LogFolderCommand}"/><TextBlock Text="仅分享 BigFish 脱敏日志；DSH 原始诊断可能包含凭据。" VerticalAlignment="Center"/></WrapPanel>
-      </Grid></TabItem>
+      <TabItem Header="高级与日志"><ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel Margin="26">
+        <TextBlock Text="数据目录"/><TextBox Text="{Binding RootPath, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding CanEdit}"/>
+        <TextBlock Text="工作区目录"/><TextBox Text="{Binding WorkspacePath, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding CanEdit}"/>
+        <CheckBox Content="中国镜像优先（取消后使用官方源）" IsChecked="{Binding PreferChinaMirror}" IsEnabled="{Binding CanEdit}"/>
+        <CheckBox Content="使用应用专用 Node.js" IsChecked="{Binding ForcePrivateNode}" IsEnabled="{Binding CanEdit}"/>
+        <CheckBox Content="安装 Bilibili 视频筛选插件（额外下载 Python，实验功能）" IsChecked="{Binding InstallBili}" IsEnabled="{Binding CanEdit}"/>
+        <TextBlock Text="B站扫码在 DSH 设置 → 刷B站 中进行；手动执行测试。自动评论、回复和私信首次默认关闭。" Foreground="#56677A" FontSize="12"/>
+        <Button Content="应用目录与下载源" Command="{Binding ApplyPathsCommand}" HorizontalAlignment="Left"/>
+        <TextBlock Text="更改目录不迁移旧数据；不会修改系统 PATH。" Foreground="#68788A" Margin="0,6,0,12"/>
+        <Expander Header="查看脱敏日志"><TextBox Text="{Binding Logs, Mode=OneWay}" IsReadOnly="True" FontFamily="Consolas" FontSize="12" TextWrapping="Wrap" Height="240" VerticalScrollBarVisibility="Auto"/></Expander>
+        <Button Content="打开日志文件夹" Command="{Binding LogFolderCommand}" HorizontalAlignment="Left"/>
+      </StackPanel></ScrollViewer></TabItem>
     </TabControl>
-    <TextBlock Grid.Row="2" Text="{Binding Status}" Margin="0,16,0,0" Foreground="#34506D" AutomationProperties.LiveSetting="Polite"/>
+    <Border Grid.Row="2" Background="#EAF0F8" Padding="12" Margin="0,14,0,0"><TextBlock Text="{Binding Status}" Foreground="#34506D" AutomationProperties.LiveSetting="Polite"/></Border>
   </Grid>
 </Window>

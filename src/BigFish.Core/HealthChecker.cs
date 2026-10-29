@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace BigFish.Core;
 
-public sealed class HealthChecker : IDisposable
+public sealed class HealthChecker : IDisposable, IDshSetupRpc
 {
     private readonly HttpClient http;
     private readonly CookieContainer cookies;
@@ -69,6 +69,21 @@ public sealed class HealthChecker : IDisposable
         if (body is not null) request.Content = JsonContent.Create(body);
         using var response = await http.SendAsync(request, ct); response.EnsureSuccessStatusCode();
         using var doc = JsonDocument.Parse(await response.Content.ReadAsStringAsync(ct)); return doc.RootElement.Clone();
+    }
+    public async Task<JsonElement> CallAsync(string endpoint, object arguments, CancellationToken ct)
+    {
+        if (endpoint is not ("settings/describe" or "credentials/describe" or "credentials/set" or "workspace/create"))
+            throw new ArgumentException("不支持的配置操作。");
+        var id = "bigfish-" + Guid.NewGuid().ToString("N");
+        var response = await SendJsonAsync("api/" + endpoint, new { type = "client-request", rpcId = id,
+            method = endpoint, payload = new { args = arguments } }, ct);
+        if (!response.TryGetProperty("rpcId", out var correlation) || correlation.GetString() != id)
+            throw new BigFishException("configuration", "DSH 配置响应不匹配，操作未确认。");
+        var result = response.GetProperty("result");
+        if (!result.GetProperty("ok").GetBoolean())
+            // Do not echo an upstream error body: a rejected secret may appear in validation details.
+            throw new BigFishException("configuration", "DSH 拒绝此配置操作，请检查本机模型设置；未记录请求内容。");
+        return result.TryGetProperty("value", out var value) ? value.Clone() : default;
     }
     public async Task<IReadOnlyList<string>> ConnectionStatusAsync(CancellationToken ct)
     {

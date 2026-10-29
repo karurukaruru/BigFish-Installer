@@ -84,7 +84,7 @@ public class DownloadSourceTests
     {
         using var t = new TempDirectory(); var config = new ConfigurationManager(t.Paths); t.Paths.Prepare();
         await config.EnsureChineseDefaultsAsync(default); var file = Path.Combine(t.Paths.Home, "settings.yaml");
-        Assert.Contains("zh-CN", await File.ReadAllTextAsync(file));
+        Assert.Contains("preference: zh\n", await File.ReadAllTextAsync(file));
         await File.WriteAllTextAsync(file, "locale:\n  preference: en-US\ncustom: preserved\n");
         await config.EnsureChineseDefaultsAsync(default); Assert.Contains("custom: preserved", await File.ReadAllTextAsync(file));
         Assert.Contains("en-US", await File.ReadAllTextAsync(file));

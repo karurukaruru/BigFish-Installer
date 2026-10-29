@@ -21,14 +21,14 @@ try {
     $p = Start-Process $app -ArgumentList @('--self-test', ('"' + $uiReport + '"')) -PassThru -Wait
     if ($p.ExitCode -ne 0 -or !(Test-Path $uiReport)) { throw 'Self-contained WPF launch failed' }
     $ui = Get-Content $uiReport -Raw | ConvertFrom-Json
-    if (!$ui.wpfLoaded -or !$ui.osSupported -or $ui.downloadRegion -ne $(if ($Region -eq 'cn') { 'China' } else { 'Global' })) { throw 'WPF or environment detection failed' }
-    $acceptanceArgs = @('smoke', '--region', $Region, '--root', $data, '--workspace', $workspace, '--private-node', '--report', (Join-Path $reports 'windows-engine.json'))
+    if (!$ui.wpfLoaded -or !$ui.viewModelBound -or $ui.pagesVisited -ne 4 -or $ui.bindingErrors.Count -ne 0 -or !$ui.osSupported -or $ui.downloadRegion -ne $(if ($Region -eq 'cn') { 'China' } else { 'Global' })) { throw 'WPF or environment detection failed' }
+    $acceptanceArgs = @('smoke', '--region', $Region, '--root', $data, '--workspace', $workspace, '--private-node', '--setup-smoke', '--report', (Join-Path $reports 'windows-engine.json'))
     if ($Bili) { $acceptanceArgs += '--bili' }
     & (Join-Path $repo "artifacts/cli/$Region/BigFish.Cli.exe") @acceptanceArgs
     if ($LASTEXITCODE -ne 0) { throw 'Real Windows install/start/repeat acceptance failed' }
     if (!$Bili -and (Test-Path (Join-Path $data 'dsh-home/bili-duty/.venv'))) { throw 'Base install unexpectedly installed Python' }
     $record = Get-Content (Join-Path $reports 'windows-engine.json') -Raw | ConvertFrom-Json
-    if (!$record.idempotent -or !$record.sentinelPreserved -or !$record.imRpc) { throw 'Incomplete acceptance evidence' }
+    if (!$record.idempotent -or !$record.sentinelPreserved -or !$record.imRpc -or !$record.credentialRoundTrip -or !$record.apiKeyPreserved -or $record.interfaceLanguage -ne 'zh') { throw 'Incomplete acceptance evidence' }
 } finally {
     # Only these test-specific folders belong to this script. Keep failures for local inspection.
     Remove-Item Env:DOTNET_ROOT -ErrorAction SilentlyContinue

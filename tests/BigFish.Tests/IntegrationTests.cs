@@ -232,7 +232,7 @@ internal sealed class LocalDshFixture : IAsyncDisposable
     private readonly Task loop;
     public Uri Origin { get; }
     public bool SawCookie { get; private set; }
-    public LocalDshFixture(bool unrelated = false)
+    public LocalDshFixture(bool unrelated = false, Func<string, string, string>? apiResponse = null)
     {
         listener.Start(); Origin = new($"http://127.0.0.1:{((IPEndPoint)listener.LocalEndpoint).Port}/");
         loop = Task.Run(async () =>
@@ -242,19 +242,37 @@ internal sealed class LocalDshFixture : IAsyncDisposable
                 using var client = await listener.AcceptTcpClientAsync(stop.Token); using var stream = client.GetStream();
                 using var reader = new StreamReader(stream, Encoding.ASCII, leaveOpen: true);
                 var line = await reader.ReadLineAsync(stop.Token) ?? ""; var path = line.Split(' ').ElementAtOrDefault(1) ?? "/";
-                var length = 0;
+                var length = 0; var chunked = false;
                 while (!string.IsNullOrEmpty(line = await reader.ReadLineAsync(stop.Token)))
                 {
+                    if (line.StartsWith("Transfer-Encoding:", StringComparison.OrdinalIgnoreCase) && line.Contains("chunked", StringComparison.OrdinalIgnoreCase)) chunked = true;
                     if (line.StartsWith("Content-Length:", StringComparison.OrdinalIgnoreCase)) length = int.Parse(line.Split(':')[1]);
                     if (line.StartsWith("Cookie:", StringComparison.OrdinalIgnoreCase)) SawCookie = true;
                 }
-                if (length > 0)
+                var requestBody = "";
+                if (chunked)
+                {
+                    var chunks = new StringBuilder();
+                    while (true)
+                    {
+                        var header = await reader.ReadLineAsync(stop.Token) ?? throw new IOException("missing chunk");
+                        var size = Convert.ToInt32(header.Split(';')[0], 16);
+                        if (size == 0) { while (!string.IsNullOrEmpty(await reader.ReadLineAsync(stop.Token))) { } break; }
+                        var content = new char[size]; var consumed = 0;
+                        while (consumed < size) { var n = await reader.ReadAsync(content.AsMemory(consumed), stop.Token); if (n == 0) throw new IOException("short chunk"); consumed += n; }
+                        chunks.Append(content); await reader.ReadLineAsync(stop.Token);
+                    }
+                    requestBody = chunks.ToString();
+                }
+                else if (length > 0)
                 {
                     var body = new char[length]; var read = 0;
                     while (read < length) { var n = await reader.ReadAsync(body.AsMemory(read), stop.Token); if (n == 0) break; read += n; }
+                    requestBody = new string(body, 0, read);
                 }
                 var login = path.Contains("?token=", StringComparison.Ordinal) && !unrelated;
                 var payload = path.StartsWith("/api/") ? "{\"result\":{\"ok\":true,\"value\":{\"bots\":[]}}}" : unrelated ? "other service" : "<title>DeepSeek Harness</title>";
+                if (path.StartsWith("/api/", StringComparison.Ordinal) && apiResponse is not null) payload = apiResponse(path, requestBody);
                 var bytes = Encoding.UTF8.GetBytes(payload);
                 var response = $"HTTP/1.1 {(login ? "303 See Other" : "200 OK")}\r\nConnection: close\r\nContent-Length: {bytes.Length}\r\nContent-Type: {(path.StartsWith("/api/") ? "application/json" : "text/html")}\r\n" +
                     (login ? "Set-Cookie: fixture=session; Path=/; HttpOnly\r\nLocation: /\r\n" : "") + "\r\n";

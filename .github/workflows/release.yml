@@ -74,7 +74,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          TAG: v0.1.1-preview
+          TAG: v0.1.2-preview
           SHA: ${{ github.sha }}
         shell: bash
         run: |
@@ -83,10 +83,11 @@ jobs:
           test -s release-downloads/BigFish-Global.exe
           test "$(find release-downloads -maxdepth 1 -type f | wc -l)" -eq 2
           printf '%s\n' \
-            'BigFish 0.1.1 Preview - Windows x64' \
+            'BigFish 0.1.2 Preview - Windows x64' \
             '' \
             '下载下方中国版或国际版 EXE，双击运行即可进入图形安装器。首次安装需要联网。' \
             '无需预装 .NET / Node.js / Python。' \
+            '修复启动进度条绑定；直接在安装器填写 API Key；自动注册工作区。' \
             '' \
             '中国版：BigFish-CN.exe（国内下载镜像优先）。' \
             '国际版：BigFish-Global.exe（官方源优先）。' \
@@ -97,9 +98,9 @@ jobs:
             "构建提交：$SHA" > release-notes.md
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" release-downloads/BigFish-CN.exe release-downloads/BigFish-Global.exe --clobber
-            gh release edit "$TAG" --prerelease --title "BigFish 0.1.1 Preview" --notes-file release-notes.md
+            gh release edit "$TAG" --prerelease --title "BigFish 0.1.2 Preview" --notes-file release-notes.md
           else
             gh release create "$TAG" release-downloads/BigFish-CN.exe release-downloads/BigFish-Global.exe \
-              --target "$SHA" --prerelease --title "BigFish 0.1.1 Preview" --notes-file release-notes.md
+              --target "$SHA" --prerelease --title "BigFish 0.1.2 Preview" --notes-file release-notes.md
           fi
           gh release view "$TAG" --json url,assets --jq '{url: .url, assets: [.assets[].name]}'

@@ -169,7 +169,11 @@ public sealed class BigFishController : IAsyncDisposable
         public Task ImAsync(NodeRuntime runtime, string release, CancellationToken ct) => plugins.EnsureAsync(manifest.Im, runtime, paths.Release(release), ct);
         public async Task BiliPackageAsync(NodeRuntime runtime, string release, CancellationToken ct)
         { await config.EnsureBiliSafeDefaultsAsync(ct); await plugins.EnsureAsync(manifest.Bili, runtime, paths.Release(release), ct); }
-        public Task StartAsync(NodeRuntime runtime, string release, bool im, CancellationToken ct) => service.StartAsync(runtime, paths.Release(release), im, ct);
+        public async Task StartAsync(NodeRuntime runtime, string release, bool im, CancellationToken ct)
+        {
+            await service.StartAsync(runtime, paths.Release(release), im, ct);
+            await new DshSetupClient(service.Health!).EnsureWorkspaceAsync(paths.Workspace, ct);
+        }
         public Task BiliDependenciesAsync(NodeRuntime runtime, string release, CancellationToken ct) => bili.EnsureAsync(runtime, paths.Release(release), service.Health!, ct);
     }
 }

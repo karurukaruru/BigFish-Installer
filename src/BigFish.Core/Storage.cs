@@ -39,10 +39,17 @@ public sealed class InstallationStateStore(string path)
 
 public sealed class ConfigurationManager(AppPaths paths)
 {
-    public Task EnsureChineseDefaultsAsync(CancellationToken ct)
+    public async Task EnsureChineseDefaultsAsync(CancellationToken ct)
     {
         var file = Path.Combine(paths.Home, "settings.yaml");
-        return File.Exists(file) ? Task.CompletedTask : AtomicFile.WriteAsync(file, "locale:\n  preference: zh-CN\n", ct);
+        if (File.Exists(file))
+        {
+            var existing = await File.ReadAllTextAsync(file, ct);
+            if (existing.Replace("\r\n", "\n").Trim() != "locale:\n  preference: zh-CN") return;
+            // Migrate only our exact 0.1.1 template; never change an existing user's locale/config.
+            File.Copy(file, file + ".pre-0.1.2-" + Guid.NewGuid().ToString("N"));
+        }
+        await AtomicFile.WriteAsync(file, "locale:\n  preference: zh\n", ct);
     }
     public async Task<string> BackupProfileAsync(CancellationToken ct)
     {

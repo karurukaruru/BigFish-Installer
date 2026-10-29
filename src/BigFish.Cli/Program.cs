@@ -37,6 +37,14 @@ try
         var language = await controller.Service.Health.RpcAsync("dsh-im-language", "settings.language.get", cancellation.Token);
         reportObject["interfaceLanguage"] = language.GetProperty("value").GetProperty("language").GetString();
     }
+    if (arguments.Contains("--setup-smoke"))
+    {
+        var setup = new DshSetupClient(controller.Service.Health!);
+        if (await setup.HasApiKeyAsync(cancellation.Token)) throw new Exception("配置验收必须使用无密钥的隔离测试目录，拒绝覆盖已有凭据。");
+        await setup.SaveApiKeyAsync("bigfish-local-acceptance-not-a-real-api-key", cancellation.Token);
+        reportObject["credentialRoundTrip"] = await setup.HasApiKeyAsync(cancellation.Token);
+        reportObject["workspaceRegistered"] = true;
+    }
     if (verb == "smoke")
     {
         await controller.Service.StopAsync();
@@ -47,6 +55,11 @@ try
         var after = await File.ReadAllBytesAsync(configPath);
         if (!before.SequenceEqual(after)) throw new Exception("配置保护检查失败。");
         reportObject["idempotent"] = true; reportObject["sentinelPreserved"] = true;
+        if (arguments.Contains("--setup-smoke"))
+        {
+            reportObject["apiKeyPreserved"] = await new DshSetupClient(reopened.Service.Health!).HasApiKeyAsync(cancellation.Token);
+            if (reportObject["apiKeyPreserved"] is not true) throw new Exception("重复安装丢失凭据。");
+        }
         await reopened.Service.StopAsync(); reportObject["stopSucceeded"] = !reopened.Service.IsRunning;
     }
     if (Value("--report") is { } output) await File.WriteAllTextAsync(output, JsonSerializer.Serialize(reportObject, Json.Options));

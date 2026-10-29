@@ -1,16 +1,24 @@
 # BigFish Installer
 
-A Chinese-first, per-user Windows 10 22H2 / Windows 11 x64 deployment manager for DeepSeek Harness and dsh-im. This is an independent project, not an official DeepSeek/Tencent product. See [Chinese README](README.md).
+[中文版](README.md)
 
-Version 0.1.1 is an engineering preview. Windows self-contained EXEs can be cross-built; actual clean Windows desktop, Python, QR binding and paid model calls require manual acceptance. Never interpret the Linux test evidence as proof of Windows account integration.
+**Deploy DeepSeek Harness on Windows without command-line setup.** Windows 10 22H2 / Windows 11 x64. Chinese UI in both editions.
 
-- `release/BigFish-CN.exe`: China mirrors preferred (npmmirror, optional Tsinghua PyPI).
-- `release/BigFish-Global.exe`: official sources.
-- Both use Chinese UI and preserve existing DSH locale/configuration. Advanced options can change the download region.
-- Mirrors retain the official pinned Node/uv hash and npm lock integrity. Integrity failures stop installation.
+## Download
 
-Run the EXE, click 一键安装, then configure your API key and authorized QQ/WeChat connections in local DSH settings. No developer runtime is needed by the end user. Closing BigFish stops its own DSH process.
+**[Go to Releases](https://github.com/karurukaruru/BigFish-Installer/releases)** and choose **one** EXE in the latest Preview's **Assets**:
 
-Developer build: `pwsh -File scripts/build.ps1 -Setup -Region all`. Windows CI includes both channels and real installation/repeat checks. Inno Setup wrappers are built only on Windows. See docs/WINDOWS-ACCEPTANCE.md and docs/VALIDATION-0.1.1.md.
+| Edition | Download | Default sources |
+| --- | --- | --- |
+| China | **`BigFish-CN.exe`** | China mirrors first |
+| Global | **`BigFish-Global.exe`** | Official sources first |
 
-Code: MIT. Artwork: separate upstream attribution/non-commercial/share-alike terms; see assets/README.md. No public GitHub Release has been created by this handoff.
+Double-click the EXE, select **一键安装** (one-click install), and let it download the dependencies. No separate .NET or Node.js installation is required. An internet connection is necessary. To actually chat, configure **your own model API key**. QQ and WeChat also require the respective platform permissions and authorization.
+
+**Engineering preview (0.1.1):** Windows CI has exercised basic DSH/IM installation, HTTP/RPC readiness and repeated installation, but clean end-user Windows machines, real account QR pairing and paid model calls still require manual validation. The current EXEs are unsigned; do not disable security protections to run them.
+
+Independent third-party project, not an official DeepSeek, Tencent or Bilibili product.
+
+[Help](docs/TROUBLESHOOTING.md) · [Validation details](docs/VALIDATION-0.1.1.md) · [Windows acceptance](docs/WINDOWS-ACCEPTANCE.md)
+
+Code: MIT. Art assets carry separate licensing terms; see [assets/README.md](assets/README.md).

@@ -4,26 +4,26 @@ on:
   push:
     branches: [main]
     paths:
+      - '.github/workflows/release.yml'
       - 'src/**'
       - 'tests/**'
       - 'scripts/**'
       - 'compatibility/**'
       - 'Directory.Build.props'
       - 'BigFish.sln'
-      - '.github/workflows/release.yml'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: bigfish-preview-${{ github.ref }}
-  cancel-in-progress: true
+  group: bigfish-preview-release
+  cancel-in-progress: false
 
 jobs:
-  build-and-verify:
+  windows-build-and-acceptance:
     runs-on: windows-2025
-    timeout-minutes: 50
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
@@ -32,69 +32,74 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24.22.1'
-      - name: Build, test, and check both Windows download channels
+      - name: Run regression tests and publish two self-contained EXEs
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
           dotnet test tests/BigFish.Tests -c Release
           if ($LASTEXITCODE -ne 0) { throw 'Unit/integration tests failed' }
-          New-Item -ItemType Directory -Force artifacts/release, artifacts/wpf-selftest | Out-Null
+          New-Item -ItemType Directory -Force -Path release-downloads | Out-Null
           foreach ($region in @('cn', 'global')) {
             $label = if ($region -eq 'cn') { 'CN' } else { 'Global' }
             $output = "artifacts/channels/$region"
             dotnet publish src/BigFish.App -c Release -r win-x64 --self-contained true "-p:BigFishDownloadRegion=$region" -o $output
-            if ($LASTEXITCODE -ne 0) { throw "Windows publish failed for $region" }
-            Copy-Item "$output/BigFish.exe" "artifacts/release/BigFish-$label.exe" -Force
+            if ($LASTEXITCODE -ne 0) { throw "Windows publish failed ($region)" }
             ./scripts/windows-acceptance.ps1 -Region $region
-            if ($LASTEXITCODE -ne 0) { throw "Windows real-install acceptance failed for $region" }
-            $report = Join-Path $PWD "artifacts/wpf-selftest/$region.json"
-            $app = Join-Path $PWD "artifacts/release/BigFish-$label.exe"
-            $p = Start-Process -FilePath $app -ArgumentList @('--self-test', ('"' + $report + '"')) -Wait -PassThru
-            if ($p.ExitCode -ne 0 -or !(Test-Path $report)) { throw "WPF self-test failed for $region" }
+            if ($LASTEXITCODE -ne 0) { throw "Windows acceptance failed ($region)" }
+            $source = Join-Path $output 'BigFish.exe'
+            if (!(Test-Path $source) -or (Get-Item $source).Length -lt 1000000) { throw "Standalone EXE missing or too small ($region)" }
+            Copy-Item $source "release-downloads/BigFish-$label.exe" -Force
           }
-          Get-ChildItem artifacts/release/*.exe | ForEach-Object {
-            $hash = (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
-            Write-Output "SHA256 $($_.Name) $hash"
-          }
+          $files = @(Get-ChildItem release-downloads -File)
+          if ($files.Count -ne 2) { throw "Expected exactly two EXEs, found $($files.Count)" }
+          $files | ForEach-Object { Write-Output "$($_.Name) SHA256=$((Get-FileHash $_.FullName -Algorithm SHA256).Hash)" }
       - uses: actions/upload-artifact@v4
         with:
-          name: BigFish-two-Windows-EXEs
-          path: |
-            artifacts/release/BigFish-CN.exe
-            artifacts/release/BigFish-Global.exe
+          name: two-exe-downloads
+          path: release-downloads/*.exe
           if-no-files-found: error
+          retention-days: 7
 
-  publish-preview:
-    needs: build-and-verify
+  publish-release:
+    needs: windows-build-and-acceptance
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: BigFish-two-Windows-EXEs
-          path: dist
-      - name: Publish exactly two executable downloads
+          name: two-exe-downloads
+          path: release-downloads
+      - name: Check exactly two binaries and publish preview
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
+          TAG: v0.1.1-preview
+          SHA: ${{ github.sha }}
         shell: bash
         run: |
           set -euo pipefail
-          test -s dist/BigFish-CN.exe
-          test -s dist/BigFish-Global.exe
-          tag="v0.1.1-preview.${GITHUB_RUN_NUMBER}"
-          cat > release-notes.md <<'EOF'
-          ## 下载方式（Windows 10 22H2 / Windows 11 x64）
-          
-          只需下载下方 Assets 中两个 EXE **之一**：
-          - `BigFish-CN.exe`：中国地区，国内镜像优先。
-          - `BigFish-Global.exe`：其他地区，官方源优先。
-          
-          下载后直接双击，点击「一键安装」，根据引导配置自己的模型 API Key 及获得授权的 QQ/微信接入。安装过程需要联网。
-          
-          **工程预览版，尚非最终正式验收**：Windows CI 已执行基础安装、重复安装及 WPF 自测；尚未验证全新个人电脑、真实扫码和模型付费调用。EXE 当前未做代码签名，Windows 可能显示 SmartScreen 警告。请勿关闭系统安全防护。
-          
-          本项目为独立第三方工具，不是 DeepSeek、腾讯或哔哩哔哩官方产品。
-          EOF
-          gh release create "$tag" --target "$GITHUB_SHA" --title "BigFish Installer 0.1.1 Preview #${GITHUB_RUN_NUMBER}" --prerelease --notes-file release-notes.md dist/BigFish-CN.exe dist/BigFish-Global.exe
+          test -s release-downloads/BigFish-CN.exe
+          test -s release-downloads/BigFish-Global.exe
+          test "$(find release-downloads -maxdepth 1 -type f | wc -l)" -eq 2
+          printf '%s\n' \
+            'BigFish 0.1.1 Preview - Windows x64' \
+            '' \
+            '下载下方中国版或国际版 EXE，双击运行即可进入图形安装器。首次安装需要联网。' \
+            '无需预装 .NET / Node.js / Python。' \
+            '' \
+            '中国版：BigFish-CN.exe（国内下载镜像优先）。' \
+            '国际版：BigFish-Global.exe（官方源优先）。' \
+            '' \
+            'Windows CI 已通过程序启动、真实 DSH/IM 安装、认证、重复安装及停止检查。' \
+            '尚未完成人工扫码、真实模型调用及完整终端用户验收；程序尚未签名。' \
+            '' \
+            "构建提交：$SHA" > release-notes.md
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" release-downloads/BigFish-CN.exe release-downloads/BigFish-Global.exe --clobber
+            gh release edit "$TAG" --prerelease --title "BigFish 0.1.1 Preview" --notes-file release-notes.md
+          else
+            gh release create "$TAG" release-downloads/BigFish-CN.exe release-downloads/BigFish-Global.exe \
+              --target "$SHA" --prerelease --title "BigFish 0.1.1 Preview" --notes-file release-notes.md
+          fi
+          gh release view "$TAG" --json url,assets --jq '{url: .url, assets: [.assets[].name]}'

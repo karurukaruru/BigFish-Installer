@@ -148,6 +148,32 @@ public class IntegrationTests
         await Assert.ThrowsAsync<System.ComponentModel.Win32Exception>(() => service.StartAsync(new("missing-bigfish-executable", "unused", "24.22.1"), paths.Root, false, default));
         using var released = new FileStream(Path.Combine(paths.Root, ".service.lock"), FileMode.Open, FileAccess.ReadWrite, FileShare.None);
     }
+    [Fact] public async Task PluginLauncherUsesPinnedPnpmWithoutWindowsCmdPathSplitting()
+    {
+        using var t = new TempDirectory(); var paths = t.Paths; paths.Prepare();
+        var launcher = Path.Combine(paths.Root, "plugin-launcher.mjs");
+        var fakeCli = Path.Combine(paths.Workspace, "fake dsh & spaces.mjs");
+        var fakePnpm = Path.Combine(paths.Workspace, "fake pnpm & spaces.cjs");
+        await File.WriteAllTextAsync(launcher, PluginManager.PluginLauncherSource);
+        await File.WriteAllTextAsync(fakePnpm, "process.stdout.write('PINNED_PNPM_OK')");
+        await File.WriteAllTextAsync(fakeCli, """
+            export async function runCli({packageManager: pm}) {
+              const {spawnSync} = await import('node:child_process');
+              const result = spawnSync(pm.command, [...pm.args, '--version'], {
+                shell: false, encoding: 'utf8', env: pm.env
+              });
+              if (result.status !== 0) throw new Error(result.stderr || 'pnpm launch failed');
+              process.stdout.write(JSON.stringify({argv: process.argv.slice(2), output: result.stdout}));
+            }
+            """);
+        var runner = new ProcessRunner(new(paths.Logs));
+        var result = await runner.RunAsync(new("node", [launcher, fakeCli, fakePnpm, "plugin", "--profile", "web", "add", "@test/hello@1.0.0"], paths.Workspace), default);
+        Assert.Equal(0, result.ExitCode);
+        Assert.Contains("PINNED_PNPM_OK", result.Output);
+        Assert.Contains("\"plugin\"", result.Output);
+        Assert.Contains("@test/hello@1.0.0", result.Output);
+    }
+
     [Fact] public async Task DetectorExecutesNodeAndNpmInsteadOfTrustingFiles()
     {
         using var t = new TempDirectory(); var candidate = Path.Combine(t.Root, "node.exe"); await File.WriteAllTextAsync(candidate, "fixture");

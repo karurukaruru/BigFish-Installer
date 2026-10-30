@@ -17,7 +17,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: bigfish-preview-release
+  group: bigfish-release
   cancel-in-progress: false
 
 jobs:
@@ -70,11 +70,11 @@ jobs:
         with:
           name: two-exe-downloads
           path: release-downloads
-      - name: Check exactly two binaries and publish preview
+      - name: Check exactly two binaries and publish release
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          TAG: v0.1.2-preview
+          TAG: v0.1.2
           SHA: ${{ github.sha }}
         shell: bash
         run: |
@@ -83,7 +83,7 @@ jobs:
           test -s release-downloads/BigFish-Global.exe
           test "$(find release-downloads -maxdepth 1 -type f | wc -l)" -eq 2
           printf '%s\n' \
-            'BigFish 0.1.2 Preview - Windows x64' \
+            'BigFish Installer 0.1.2 - Windows x64' \
             '' \
             '下载下方中国版或国际版 EXE，双击运行即可进入图形安装器。首次安装需要联网。' \
             '无需预装 .NET / Node.js / Python。' \
@@ -95,12 +95,14 @@ jobs:
             'Windows CI 已通过程序启动、真实 DSH/IM 安装、认证、重复安装及停止检查。' \
             '尚未完成人工扫码、真实模型调用及完整终端用户验收；程序尚未签名。' \
             '' \
-            "构建提交：$SHA" > release-notes.md
+            "构建提交：$SHA" \
+            '' \
+            'SHA-256 校验值：' > release-notes.md
+          sha256sum release-downloads/BigFish-CN.exe release-downloads/BigFish-Global.exe >> release-notes.md
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" release-downloads/BigFish-CN.exe release-downloads/BigFish-Global.exe --clobber
-            gh release edit "$TAG" --prerelease --title "BigFish 0.1.2 Preview" --notes-file release-notes.md
+            echo "Release $TAG already exists; preserving the existing tag and assets."
           else
             gh release create "$TAG" release-downloads/BigFish-CN.exe release-downloads/BigFish-Global.exe \
-              --target "$SHA" --prerelease --title "BigFish 0.1.2 Preview" --notes-file release-notes.md
+              --target "$SHA" --latest --title "BigFish Installer 0.1.2" --notes-file release-notes.md
           fi
           gh release view "$TAG" --json url,assets --jq '{url: .url, assets: [.assets[].name]}'

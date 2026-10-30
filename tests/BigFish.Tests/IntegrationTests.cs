@@ -108,6 +108,15 @@ public class IntegrationTests
         await using var server = new LocalDshFixture(unrelated: true); using var health = new HealthChecker();
         await Assert.ThrowsAsync<BigFishException>(() => health.AuthenticateAsync(new(server.Origin, "?token=fixture"), default));
     }
+    [Fact] public async Task LocalDshFixtureCanStopBeforeOrDuringAccept()
+    {
+        for (var i = 0; i < 100; i++)
+        {
+            var server = new LocalDshFixture();
+            if (i % 2 == 0) await Task.Yield();
+            await server.DisposeAsync().AsTask().WaitAsync(TimeSpan.FromSeconds(5));
+        }
+    }
     [Fact] public async Task ActualChildProcessCancellationTerminatesPromptly()
     {
         using var t = new TempDirectory(); var runner = new ProcessRunner(new(t.Paths.Logs)); using var cts = new CancellationTokenSource(300);
@@ -282,7 +291,9 @@ internal sealed class LocalDshFixture : IAsyncDisposable
     }
     public async ValueTask DisposeAsync()
     {
-        stop.Cancel(); listener.Stop(); try { await loop; } catch (Exception e) when (e is OperationCanceledException or SocketException) { }
-        stop.Dispose();
+        stop.Cancel();
+        try { await loop; }
+        catch (Exception e) when (e is OperationCanceledException or SocketException) { }
+        finally { listener.Stop(); stop.Dispose(); }
     }
 }

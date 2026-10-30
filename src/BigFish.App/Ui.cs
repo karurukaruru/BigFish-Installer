@@ -1,0 +1,202 @@
+using System.ComponentModel;
+using BigFish.Core;
+
+namespace BigFish.App;
+
+public sealed class Ui : INotifyPropertyChanged
+{
+    public static Ui Text { get; } = new();
+    public bool CanChooseLanguage { get; } = DownloadSources.BuildDefault != DownloadRegion.China;
+    public event PropertyChangedEventHandler? PropertyChanged;
+    public event Action? LanguageChanged;
+    private string language = "zh-CN";
+    public string Language => language;
+    public void SetLanguage(string value)
+    {
+        var next = value == "en-US" && CanChooseLanguage ? "en-US" : "zh-CN";
+        if (next == language) return;
+        language = next;
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Language)));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Item[]"));
+        LanguageChanged?.Invoke();
+    }
+    public string this[string key] => phrases.TryGetValue(key, out var row) ? (language == "en-US" ? row.En : row.Zh) : key;
+    public string Map(string? value)
+    {
+        if (string.IsNullOrEmpty(value) || language != "en-US") return value ?? "";
+        return engine.TryGetValue(value, out var english) ? english : value;
+    }
+    public CheckResult MapCheck(CheckResult item) => new(Map(item.Component), Map(item.Status), Map(item.Detail), item.Ready);
+    public string Hint(string code) => phrases.ContainsKey("Hint." + code) ? this["Hint." + code] : this["Hint.unexpected"];
+
+    private static readonly Dictionary<string, (string Zh, string En)> phrases = new()
+    {
+        ["WindowTitle"] = ("大肥鱼安装器 · BigFish", "BigFish Installer"),
+        ["AppName"] = ("大肥鱼安装器", "BigFish Installer"),
+        ["Subtitle"] = ("安装 → 填入 API Key → 按需要扫码绑定，然后打开 DSH 使用。", "Install, enter an API key, bind a platform if you need it, then open DSH."),
+        ["TabInstall"] = ("1  安装", "1  Install"),
+        ["TabModel"] = ("2  模型与绑定", "2  Model and binding"),
+        ["TabManage"] = ("使用与管理", "Use and manage"),
+        ["TabAdvanced"] = ("高级与日志", "Advanced and logs"),
+        ["PrepareTitle"] = ("准备运行环境", "Prepare the runtime"),
+        ["PrepareBody"] = ("无需手动安装 Node.js 或输入命令。已有配置和会话会保留。", "No separate Node.js install and no commands. Existing settings and sessions stay."),
+        ["InstallTarget"] = ("这次安装到：", "This install goes to: "),
+        ["NeedHarness"] = ("DeepSeek Harness（必需）", "DeepSeek Harness (required)"),
+        ["NeedIm"] = ("QQ / 微信消息接入", "QQ / WeChat messaging"),
+        ["InstallButton"] = ("一键安装 / 修复", "Install / Repair"),
+        ["CheckButton"] = ("检查环境", "Check environment"),
+        ["CancelButton"] = ("取消", "Cancel"),
+        ["ProgressNote"] = ("百分比仅用于当前下载文件；包安装阶段显示不确定进度，完成项以实际验证为准。", "The percentage is only for the file currently downloading. Package installation shows an indeterminate bar; finished items are the ones that were actually verified."),
+        ["ChecksHeader"] = ("环境检查结果", "Environment check"),
+        ["ApiTitle"] = ("填入你的 DeepSeek API Key", "Enter your DeepSeek API key"),
+        ["ApiBody"] = ("安装完成或启动服务后即可保存。只交给本机 DSH 的凭据存储，不写进 BigFish 设置或日志。", "Save after installation or after the service starts. The key goes only to local DSH credential storage, not into BigFish settings or logs."),
+        ["SaveKey"] = ("保存 API Key", "Save API key"),
+        ["OtherModel"] = ("其他服务商 / 模型设置", "Other provider / model settings"),
+        ["KeyNote"] = ("不填不会覆盖已有密钥。保存只确认配置成功，有效性和余额需要你在 DSH 发送消息测试。", "Leaving this empty does not replace a saved key. Saving only confirms the write. Check validity and balance by sending a message in DSH."),
+        ["BindTitle"] = ("按需要绑定 QQ 或微信", "Bind QQ or WeChat if you need them"),
+        ["BindBody"] = ("扫码和授权在 dsh-im 原有页面完成。账号权限由平台决定，安装器不会替你授权。", "QR codes and authorization stay on the existing dsh-im pages. The platform decides account permission; this installer cannot grant it."),
+        ["BindQq"] = ("绑定 QQ", "Bind QQ"),
+        ["BindWeChat"] = ("绑定微信", "Bind WeChat"),
+        ["TestConnection"] = ("检查连接状态", "Check connection"),
+        ["OpenDsh"] = ("打开大肥鱼 DSH", "Open BigFish DSH"),
+        ["Start"] = ("启动", "Start"),
+        ["Stop"] = ("停止", "Stop"),
+        ["Restart"] = ("重启", "Restart"),
+        ["OpenDshShort"] = ("打开 DSH", "Open DSH"),
+        ["Repair"] = ("修复安装", "Repair install"),
+        ["OpenWorkspace"] = ("打开工作区", "Open workspace"),
+        ["CheckUpdates"] = ("检查更新", "Check for updates"),
+        ["ManageNote"] = ("关闭安装器会停止它启动的服务。下次打开后点击启动，模型配置和会话仍然保留。聊天在 DSH 中进行。", "Closing the installer stops the service it started. Next time, click Start; model settings and sessions remain. Chat happens in DSH."),
+        ["DataDir"] = ("数据目录", "Data directory"),
+        ["WorkspaceDir"] = ("工作区目录", "Workspace directory"),
+        ["ChinaMirror"] = ("中国镜像优先（取消后使用官方源）", "Prefer China mirrors (clear this to use official sources)"),
+        ["PrivateNode"] = ("使用应用专用 Node.js", "Use the app-private Node.js"),
+        ["InstallBili"] = ("安装 Bilibili 视频筛选插件（额外下载 Python，实验功能）", "Install the Bilibili video filter plugin (downloads Python; experimental)"),
+        ["BiliNote"] = ("B站扫码在 DSH 设置 → 刷B站 中进行；手动执行测试。自动评论、回复和私信首次默认关闭。", "Scan the Bilibili QR code in DSH settings. Test it manually. Automatic comments, replies and private messages start off."),
+        ["ApplyPaths"] = ("应用目录与下载源", "Apply folders and download source"),
+        ["PathNote"] = ("改完后直接点一键安装就会用这里的数据目录，不必再落回 C 盘默认位置。旧目录里的文件不会自动搬过去，也不会修改系统 PATH。工作区要和数据目录分开。", "Install uses the data directory shown here, including a folder off the C: drive. Files already in the old directory stay there. System PATH is not changed. Keep the workspace separate from the data directory."),
+        ["ShowLogs"] = ("查看脱敏日志", "Show redacted log"),
+        ["OpenLogFolder"] = ("打开日志文件夹", "Open log folder"),
+        ["StatusPreparing"] = ("正在准备安装器……", "Preparing the installer..."),
+        ["StageWaiting"] = ("等待安装", "Waiting to install"),
+        ["GuidanceDefault"] = ("安装完成后，填入 API Key，再按需要绑定 QQ 或微信。", "After installation, enter an API key, then bind QQ or WeChat if you need them."),
+        ["ApiDefault"] = ("尚未检查。已有密钥不会显示在这里；留空即可保留。", "Not checked yet. An existing key is not shown here; leave the box empty to keep it."),
+        ["PrefsUnreadable"] = ("原目录设置无法读取，使用默认位置；原文件保留。", "Saved folder settings could not be read. Using the default locations; the original file was kept."),
+        ["Platform"] = ("支持 Windows 10 22H2 / Windows 11 x64。", "Windows 10 22H2 / Windows 11 x64 is required."),
+        ["StepCount"] = ("已验证：{0}/{1} 项", "Verified: {0}/{1}"),
+        ["Installed"] = ("安装成功，位置是 {0}。下一步：填入 API Key，然后按需要扫码绑定。", "Installed at {0}. Next: enter an API key, then bind a platform if you need it."),
+        ["Checking"] = ("正在检查环境和网络……", "Checking the environment and network..."),
+        ["Checked"] = ("检查完成。点击一键安装可补齐依赖。", "Check finished. Install to fill in anything missing."),
+        ["Started"] = ("已启动，可继续配置或打开大肥鱼。", "Started. You can configure it or open BigFish."),
+        ["Stopped"] = ("已停止，配置和会话保留。", "Stopped. Settings and sessions were kept."),
+        ["Restarted"] = ("已重启。", "Restarted."),
+        ["PathsApplied"] = ("目录已改到 {0}。工作区是 {1}。原目录里的旧文件不会搬走。", "Directory is now {0}. Workspace is {1}. Existing files stay where they are."),
+        ["GuideModel"] = ("其他服务商或模型：在 DSH 设置 → 模型 中配置。DeepSeek 密钥可以直接在本页保存。", "Other providers or models: configure them in DSH Settings, Models. A DeepSeek key can be saved on this page."),
+        ["GuideQq"] = ("在打开的 DSH 页面进入 设置 → IM机器人 → QQ，按官方机器人创建/扫码或已有凭据流程绑定。群聊能力取决于平台授权。", "On the DSH page, open Settings, IM bot, QQ, and follow the official bot or QR flow. Group chat depends on platform permission."),
+        ["GuideWeChat"] = ("在打开的 DSH 页面进入 设置 → IM机器人 → 微信，生成二维码后用获准账号扫码确认；没有相关权限时不能强行接入。", "On the DSH page, open Settings, IM bot, WeChat, and scan the QR code with an approved account. Without that permission it cannot be forced."),
+        ["Cancelling"] = ("正在取消，请等待后台进程退出。", "Cancelling. Wait for the background process to exit."),
+        ["PathRejected"] = ("{0} 这次没有继续装到默认的 C 盘目录。数据目录和工作区要写成两个不同的绝对路径；工作区不要选数据目录本身，也不要选它里面的 dsh-home、releases、downloads、logs 或 runtime。", "{0} This run did not continue into the default C: drive folder. Use two different absolute paths. Do not point the workspace at the data directory itself, or at its dsh-home, releases, downloads, logs or runtime folder."),
+        ["PathChanged"] = ("安装位置已改为 {0}。", "Install location is now {0}."),
+        ["NeedRunning"] = ("请先在安装页完成安装，或在管理页点击启动。", "Finish installation first, or click Start on the manage page."),
+        ["NeedInstallToOpen"] = ("请先完成安装或启动大肥鱼。", "Install or start BigFish first."),
+        ["KeySavedDetail"] = ("✓ 密钥已由 DSH 保存。有效性和余额尚未验证，请打开 DSH 发送一条消息测试。", "The key was saved by DSH. Validity and balance are not verified yet; send a message in DSH to test it."),
+        ["KeySaved"] = ("API Key 已保存；可以继续扫码绑定。", "API key saved. You can bind a platform next."),
+        ["KeyPresent"] = ("✓ 已有密钥，留空即可保留；尚未验证有效性或余额。", "A key is already saved. Leave the box empty to keep it. Validity and balance are not verified yet."),
+        ["KeyMissing"] = ("尚未配置，请在下方填入自己的 DeepSeek API Key。", "No key yet. Enter your own DeepSeek API key below."),
+        ["KeyUnknown"] = ("暂时无法读取密钥配置状态；可打开 DSH 模型设置检查。", "The key status could not be read. Check it in DSH model settings."),
+        ["Ready"] = ("准备就绪。点击一键安装；已有安装可到管理页启动。", "Ready. Click Install, or Start on the manage page if it is already installed."),
+        ["TestGuide"] = ("请在 DSH 发送一条消息测试模型，再在已绑定平台手动测试收发。", "Send a message in DSH to test the model, then test send and receive on a bound platform."),
+        ["ServiceRunning"] = ("✓ 本机服务运行中", "Local service is running"),
+        ["ServiceStopped"] = ("本机服务未运行", "Local service is not running"),
+        ["StageCancelled"] = ("已取消", "Cancelled"),
+        ["StageIncomplete"] = ("操作未完成", "Not finished"),
+        ["Hint.cancelled"] = ("已取消。已验证组件会保留，可重新点击一键安装。", "Cancelled. Verified pieces are kept; click Install to continue."),
+        ["Hint.access-denied"] = ("目录没有写入权限，请在高级选项中选择当前用户可写目录。", "The folder is not writable. Choose a folder your user can write to."),
+        ["Hint.network"] = ("网络请求失败。检查网络或代理后重试；不会自动切换未知下载源。", "The network request failed. Check the connection or proxy and retry. Unknown download sources are not substituted."),
+        ["Hint.integrity"] = ("下载校验不匹配，文件未执行。请重试或从官方来源检查版本。", "The download checksum did not match, so the file was not run. Retry, or check the version from the official source."),
+        ["Hint.startup-timeout"] = ("服务未在限时内就绪。查看脱敏日志，检查端口及插件兼容性。", "The service did not become ready in time. Read the redacted log and check the port and plugin compatibility."),
+        ["Hint.incompatible"] = ("版本不在已审核组合内；请更新 BigFish 后重试。", "That version is outside the reviewed set. Update BigFish and retry."),
+        ["Hint.busy"] = ("另一个 BigFish 操作正在使用此安装目录。", "Another BigFish operation is using this install folder."),
+        ["Hint.invalid-state"] = ("操作未完成，已有工作区与配置保留。请查看日志并尝试修复安装。", "Not finished. The existing workspace and settings were kept. Read the log and try Repair."),
+        ["Hint.platform"] = ("支持 Windows 10 22H2 / Windows 11 x64。", "Windows 10 22H2 / Windows 11 x64 is required."),
+        ["Hint.not-running"] = ("请先完成安装或启动大肥鱼。", "Install or start BigFish first."),
+        ["Hint.not-installed"] = ("请先完成一键安装。", "Finish Install first."),
+        ["Hint.runtime-broken"] = ("运行环境无法使用，请点击修复安装。", "The runtime cannot be used. Click Repair."),
+        ["Hint.unexpected"] = ("操作未完成，已有工作区与配置保留。请查看日志并尝试修复安装。", "Not finished. The existing workspace and settings were kept. Read the log and try Repair."),
+    };
+
+    private static readonly Dictionary<string, string> engine = new()
+    {
+        ["等待安装"] = "Waiting to install",
+        ["准备"] = "Prepare",
+        ["Node.js"] = "Node.js",
+        ["DeepSeek Harness"] = "DeepSeek Harness",
+        ["QQ / 微信插件"] = "QQ / WeChat plugin",
+        ["启动与验证"] = "Start and verify",
+        ["Bilibili 插件"] = "Bilibili plugin",
+        ["Bilibili Python"] = "Bilibili Python",
+        ["完成"] = "Finished",
+        ["已取消"] = "Cancelled",
+        ["操作未完成"] = "Not finished",
+        ["保护现有配置，检查运行环境"] = "Keep existing settings and check the runtime.",
+        ["检查实际版本和 npm 执行；必要时下载私有运行时"] = "Check the real Node.js and npm. Download a private runtime only if needed.",
+        ["安装固定版本并验证 CLI；此阶段耗时取决于网络"] = "Install the pinned version and verify the CLI. This step depends on the network.",
+        ["校验发布来源、兼容组合并安装到 Web profile"] = "Check the package source and the reviewed combination, then install it into the Web profile.",
+        ["等待本机 HTTP 认证和插件真实响应"] = "Wait for local HTTP authentication and a real plugin response.",
+        ["基础安装已通过；单独处理可选组件"] = "The base install passed. The optional component is handled separately.",
+        ["安装独立 Python 并验证依赖；不启用自动评论或私信"] = "Install a private Python and verify its dependencies. Automatic comments and private messages stay off.",
+        ["环境及本机服务已通过检查；API Key、平台授权与实际收发由你完成。"] = "The environment and local service passed. You still enter an API key, authorize a platform, and test sending.",
+        ["可选组件失败；尝试恢复已安装的基础服务。"] = "The optional component failed. Trying to restore the base service.",
+        ["中国版（国内镜像优先）"] = "China edition (China mirrors first)",
+        ["国际版（官方源）"] = "Global edition (official sources first)",
+        ["Windows"] = "Windows",
+        ["✓ 已就绪"] = "Ready",
+        ["! 不兼容"] = "Not compatible",
+        ["○ 待安装或修复"] = "Will install or repair",
+        ["npm"] = "npm",
+        ["✓ 已执行验证"] = "Verified by running it",
+        ["○ 待补齐"] = "Will be added",
+        ["工作区"] = "Workspace",
+        ["✓ 保留现有数据"] = "Existing data kept",
+        ["用户权限"] = "User permission",
+        ["管理员进程"] = "Administrator process",
+        ["✓ 标准用户权限"] = "Standard user",
+        ["正常安装不需要提升权限；已实际检查目录可写。"] = "A normal install does not need elevation. Folder write access was checked.",
+        ["DSH"] = "DSH",
+        ["✓ CLI 可执行"] = "CLI runs",
+        ["! 需要修复"] = "Needs repair",
+        ["○ 待安装"] = "Not installed yet",
+        ["独立运行环境，不覆盖全局安装"] = "Private runtime. A global install is not overwritten.",
+        ["dsh-im"] = "dsh-im",
+        ["○ 已安装，启动后检查加载"] = "Installed; load is checked after start",
+        ["以真实 HTTP RPC 返回判断加载状态"] = "Load state comes from a real HTTP RPC response.",
+        ["已有 DSH 配置"] = "Existing DSH settings",
+        ["✓ 已发现并保留"] = "Found and kept",
+        ["系统 DSH"] = "System DSH",
+        ["✓ 发现可运行版本"] = "A runnable version was found",
+        ["! 发现损坏版本"] = "A broken version was found",
+        ["Python（B站）"] = "Python (Bilibili)",
+        ["○ 将准备隔离环境"] = "A private environment will be prepared",
+        ["✓ 可复用解释器"] = "An existing interpreter can be reused",
+        ["仅选择 B站功能后安装，不修改系统 Python"] = "Installed only if Bilibili is selected. System Python is not modified.",
+        ["下载方案"] = "Download plan",
+        ["Node.js 下载源"] = "Node.js download source",
+        ["✓ 可访问"] = "Reachable",
+        ["! 网络异常"] = "Network error",
+        ["! 连接失败"] = "Connection failed",
+        ["timeout"] = "Timed out",
+        ["DeepSeek API"] = "DeepSeek API",
+        ["微信扫码服务"] = "WeChat QR service",
+        ["✓ 网络可达"] = "Network reachable",
+        ["! 服务异常"] = "Service error",
+        ["端口"] = "Port",
+        ["✓ BigFish 实例运行中"] = "A BigFish instance is running",
+        ["✓ 3080 可用"] = "Port 3080 is free",
+        ["○ 3080 已占用"] = "Port 3080 is in use",
+        ["占用时不终止其他进程，使用系统分配的本机端口"] = "Other processes are not killed. An OS-assigned local port is used instead.",
+        ["将安装应用私有 Node.js 24"] = "A private Node.js 24 will be installed.",
+        ["随私有 Node.js 提供；不依赖 PowerShell 执行策略"] = "Comes with the private Node.js. PowerShell execution policy is not used.",
+        ["工作区不能覆盖运行环境目录。"] = "The workspace cannot cover the runtime directory.",
+        ["请选择绝对路径。"] = "Choose an absolute path.",
+    };
+}

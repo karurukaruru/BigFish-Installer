@@ -6,7 +6,16 @@ namespace BigFish.App;
 public partial class MainWindow : Window
 {
     private bool closing;
-    public MainWindow() { InitializeComponent(); Closing += OnClosing; }
+    public MainWindow()
+    {
+        InitializeComponent(); Closing += OnClosing;
+        LanguageBox.Visibility = Ui.Text.CanChooseLanguage ? Visibility.Visible : Visibility.Collapsed;
+    }
+    private void OnLanguageChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (!IsLoaded || LanguageBox.SelectedValue is not string language) return;
+        Ui.Text.SetLanguage(language);
+    }
     private void OnApiKeyChanged(object sender, RoutedEventArgs e)
     {
         if (DataContext is MainViewModel vm) vm.KeyPresent = ApiKeyInput.Password.Length > 0;

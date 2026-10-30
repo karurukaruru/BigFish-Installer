@@ -2,14 +2,14 @@
 
 ![BigFish 大肥鱼安装器](assets/github-header.png)
 
-**DeepSeek 大肥鱼，一键部署。** Windows 10 22H2 / Windows 11（x64）图形安装器，默认中文。
+**DeepSeek 大肥鱼，一键部署。** Windows 10 22H2 / Windows 11（x64）图形安装器。中国版只有简体中文，并优先使用国内镜像。国际版使用官方源，可在简体中文和 English (United States) 之间切换。
 
 ## ⬇ 下载（无需编译）
 
 | 下载 | 适用地区 |
 | --- | --- |
-| **[🇨🇳 BigFish-CN.exe — 中国版](https://github.com/karurukaruru/BigFish-Installer/releases/download/v0.1.2/BigFish-CN.exe)** | 中国镜像优先 |
-| **[🌍 BigFish-Global.exe — 国际版](https://github.com/karurukaruru/BigFish-Installer/releases/download/v0.1.2/BigFish-Global.exe)** | 国际官方源 |
+| **[🇨🇳 BigFish-CN.exe — 中国版](https://github.com/karurukaruru/BigFish-Installer/releases/download/v0.1.3/BigFish-CN.exe)** | 中国镜像优先，仅简体中文 |
+| **[🌍 BigFish-Global.exe — 国际版](https://github.com/karurukaruru/BigFish-Installer/releases/download/v0.1.3/BigFish-Global.exe)** | 官方源，简体中文或 English (United States) |
 
 **[查看全部 Releases](https://github.com/karurukaruru/BigFish-Installer/releases)**
 

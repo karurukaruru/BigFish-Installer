@@ -2,7 +2,7 @@
 
 [中文版](README.md)
 
-**Deploy DeepSeek Harness on Windows without command-line setup.** Windows 10 22H2 / Windows 11 x64. Chinese UI in both editions.
+**Deploy DeepSeek Harness on Windows without command-line setup.** Windows 10 22H2 / Windows 11 x64. The China edition is Simplified Chinese and prefers China mirrors. The Global edition uses official sources and can switch between Simplified Chinese and English (United States).
 
 ## Download
 

@@ -36,9 +36,16 @@ public sealed class MainViewModel : INotifyPropertyChanged
     public bool KeyPresent { set { keyPresent = value; Changed(nameof(CanSaveKey)); } }
     private int selectedTab;
     public int SelectedTab { get => selectedTab; set => Set(ref selectedTab, value); }
-    private string status = "正在准备安装器……", stage = "等待安装", detail = "", steps = "", logs = "";
-    private string guidance = "安装完成后，填入 API Key，再按需要绑定 QQ 或微信。";
-    private string apiStatus = "尚未检查。已有密钥不会显示在这里；留空即可保留。";
+    private string status = "", stage = "", detail = "", steps = "", logs = "";
+    private string guidance = "", apiStatus = "";
+    private string statusKey = "StatusPreparing", apiKey = "ApiDefault";
+    private string? guidanceKey = "GuidanceDefault";
+    private object[] statusArgs = [];
+    private string? errorDetail;
+    private string rawStage = "等待安装", rawDetail = "";
+    private int stepCompleted, stepTotal;
+    private bool haveSteps;
+    private readonly List<CheckResult> rawChecks = [];
     private double percent;
     private bool indeterminate;
     public string Status { get => status; private set => Set(ref status, value); }
@@ -50,8 +57,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
     public string ApiStatus { get => apiStatus; private set => Set(ref apiStatus, value); }
     public double ProgressPercent { get => percent; private set => Set(ref percent, value); }
     public bool Indeterminate { get => indeterminate; private set => Set(ref indeterminate, value); }
-    public string ServiceStatus => controller?.Service.IsRunning == true ? "✓ 本机服务运行中" : "本机服务未运行";
-    public string Versions => controller is { } c ? $"DSH {c.Manifest.Dsh.Version} · dsh-im {c.Manifest.Im.Version} · {c.Paths.Sources.DisplayName}" : "";
+    public string ServiceStatus => controller?.Service.IsRunning == true ? Ui.Text["ServiceRunning"] : Ui.Text["ServiceStopped"];
+    public string Versions => controller is { } c ? $"DSH {c.Manifest.Dsh.Version} · dsh-im {c.Manifest.Im.Version} · {Ui.Text.Map(c.Paths.Sources.DisplayName)}" : "";
     public ObservableCollection<CheckResult> Checks { get; } = [];
     public ICommand InstallCommand { get; }
     public ICommand CheckCommand { get; }
@@ -84,72 +91,138 @@ public sealed class MainViewModel : INotifyPropertyChanged
                 {
                     rootPath = p.GetValueOrDefault("root", rootPath); workspacePath = p.GetValueOrDefault("workspace", workspacePath);
                     if (p.TryGetValue("region", out var region)) PreferChinaMirror = region != "global";
+                    if (p.TryGetValue("language", out var language)) Ui.Text.SetLanguage(language);
                 }
             }
             catch (Exception e) when (e is JsonException or IOException or UnauthorizedAccessException)
-            { status = "原目录设置无法读取，使用默认位置；原文件保留。"; }
+            { statusKey = "PrefsUnreadable"; }
         }
+        PublishLiveText();
         InstallCommand = Action(async ct =>
         {
-            if (!AppPaths.SupportedPlatform) throw new BigFishException("platform", "支持 Windows 10 22H2 / Windows 11 x64。");
+            if (!AppPaths.SupportedPlatform) throw new BigFishException("platform", Ui.Text["Platform"]);
+            await UseCurrentPathsAsync(ct);
             SelectedTab = 0;
             var progress = new Progress<InstallProgress>(p =>
             {
-                Stage = p.Stage; Detail = p.Detail; StepCount = $"已验证：{p.Completed}/{p.Total} 项";
+                rawStage = p.Stage; rawDetail = p.Detail; Stage = Ui.Text.Map(rawStage); Detail = Ui.Text.Map(rawDetail);
+                stepCompleted = p.Completed; stepTotal = p.Total; haveSteps = true;
+                StepCount = string.Format(Ui.Text["StepCount"], stepCompleted, stepTotal);
                 Indeterminate = !p.Fraction.HasValue && p.Completed < p.Total;
                 ProgressPercent = p.Fraction.HasValue ? p.Fraction.Value * 100 : (double)p.Completed / p.Total * 100;
             });
             await Task.Run(() => controller!.Engine.InstallAsync(new(InstallIm, InstallBili, ForcePrivateNode), progress, ct), ct);
-            Status = "安装成功。下一步：填入 API Key，然后按需要扫码绑定。";
+            SetStatus("Installed", controller!.Paths.Root);
             SelectedTab = 1; await RefreshApiStatusAsync(ct);
         });
         CheckCommand = Action(async ct =>
         {
-            Status = "正在检查环境和网络……"; Checks.Clear();
-            foreach (var item in await Task.Run(() => controller!.CheckAsync(ct, InstallBili), ct)) Checks.Add(item);
-            Status = "检查完成。点击一键安装可补齐依赖。";
+            await UseCurrentPathsAsync(ct);
+            SetStatus("Checking"); rawChecks.Clear(); Checks.Clear();
+            foreach (var item in await Task.Run(() => controller!.CheckAsync(ct, InstallBili), ct)) rawChecks.Add(item);
+            ShowChecks(); SetStatus("Checked");
         });
-        StartCommand = Action(async ct => { await controller!.StartAsync(ct); await RefreshApiStatusAsync(ct); Status = "已启动，可继续配置或打开大肥鱼。"; });
-        StopCommand = Action(async _ => { await controller!.Service.StopAsync(); Status = "已停止，配置和会话保留。"; });
-        RestartCommand = Action(async ct => { await controller!.Service.StopAsync(); await controller.StartAsync(ct); Status = "已重启。"; });
-        UpdateCommand = Action(async ct => { Guidance = string.Join("\n", await controller!.CheckUpdatesAsync(ct)); SelectedTab = 2; });
+        StartCommand = Action(async ct => { await UseCurrentPathsAsync(ct); await controller!.StartAsync(ct); await RefreshApiStatusAsync(ct); SetStatus("Started"); });
+        StopCommand = Action(async _ => { await controller!.Service.StopAsync(); SetStatus("Stopped"); });
+        RestartCommand = Action(async ct => { await UseCurrentPathsAsync(ct); await controller!.Service.StopAsync(); await controller.StartAsync(ct); SetStatus("Restarted"); });
+        UpdateCommand = Action(async ct => { await UseCurrentPathsAsync(ct); guidanceKey = null; Guidance = string.Join("\n", await controller!.CheckUpdatesAsync(ct)); SelectedTab = 2; });
         TestCommand = Action(async ct =>
         {
             var health = RequireHealth();
-            Guidance = string.Join("\n", await health.ConnectionStatusAsync(ct)) + "\n请在 DSH 发送一条消息测试模型，再在已绑定平台手动测试收发。";
+            guidanceKey = null; Guidance = string.Join("\n", await health.ConnectionStatusAsync(ct)) + "\n" + Ui.Text["TestGuide"];
             await RefreshApiStatusAsync(ct); SelectedTab = 1;
         });
         ApplyPathsCommand = Action(async ct =>
         {
-            var paths = new AppPaths(RootPath, WorkspacePath, PreferChinaMirror ? DownloadRegion.China : DownloadRegion.Global);
-            var next = await Task.Run(() => new BigFishController(paths), ct);
-            try { if (controller is not null) await controller.DisposeAsync(); }
-            catch { await next.DisposeAsync(); throw; }
-            Attach(next);
-            await AtomicFile.WriteAsync(PreferencesFile, JsonSerializer.Serialize(new { root = paths.Root, workspace = paths.Workspace, region = PreferChinaMirror ? "cn" : "global" }), ct);
-            Status = "目录和下载源已应用；原目录数据保留。";
+            await UseCurrentPathsAsync(ct);
+            SetStatus("PathsApplied", controller!.Paths.Root, controller.Paths.Workspace);
         }, requireController: false);
         OpenWebCommand = Simple(OpenWeb);
-        ModelCommand = Simple(() => Guide("其他服务商或模型：在 DSH 设置 → 模型 中配置。DeepSeek 密钥可以直接在本页保存。"));
-        QqCommand = Simple(() => Guide("在打开的 DSH 页面进入 设置 → IM机器人 → QQ，按官方机器人创建/扫码或已有凭据流程绑定。群聊能力取决于平台授权。"));
-        WeChatCommand = Simple(() => Guide("在打开的 DSH 页面进入 设置 → IM机器人 → 微信，生成二维码后用获准账号扫码确认；没有相关权限时不能强行接入。"));
+        ModelCommand = Simple(() => Guide("GuideModel"));
+        QqCommand = Simple(() => Guide("GuideQq"));
+        WeChatCommand = Simple(() => Guide("GuideWeChat"));
         WorkspaceCommand = Simple(() => ShellOpen(controller!.Paths.Workspace));
         LogFolderCommand = Simple(() => ShellOpen(controller?.Paths.Logs ?? Path.Combine(RootPath, "logs")));
-        CancelCommand = Simple(() => { cancellation?.Cancel(); Status = "正在取消，请等待后台进程退出。"; }, () => busy);
+        CancelCommand = Simple(() => { cancellation?.Cancel(); SetStatus("Cancelling"); }, () => busy);
         AdvancedCommand = Simple(() => SelectedTab = 3); LogsCommand = Simple(() => SelectedTab = 3);
         timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) }; timer.Tick += (_, _) => Refresh(); timer.Start();
+        Ui.Text.LanguageChanged += RefreshLanguage;
     }
-    private HealthChecker RequireHealth() => controller?.Service.Health ?? throw new BigFishException("not-running", "请先在安装页完成安装，或在管理页点击启动。");
+    private void PublishLiveText()
+    {
+        status = string.Format(Ui.Text[statusKey], statusArgs);
+        guidance = guidanceKey is null ? guidance : Ui.Text[guidanceKey];
+        apiStatus = Ui.Text[apiKey];
+        stage = Ui.Text.Map(rawStage); detail = Ui.Text.Map(rawDetail);
+        if (haveSteps) steps = string.Format(Ui.Text["StepCount"], stepCompleted, stepTotal);
+    }
+    private void RefreshLanguage()
+    {
+        var savedError = errorDetail;
+        Status = string.Format(Ui.Text[statusKey], statusArgs);
+        if (savedError is not null)
+        {
+            errorDetail = savedError; Detail = Ui.Text.Map(savedError); rawDetail = savedError;
+            Status = string.Format(Ui.Text[statusKey], statusArgs) + " " + Detail;
+        }
+        if (guidanceKey is not null) Guidance = Ui.Text[guidanceKey];
+        ApiStatus = Ui.Text[apiKey];
+        Stage = Ui.Text.Map(rawStage); if (savedError is null) Detail = Ui.Text.Map(rawDetail);
+        if (haveSteps) StepCount = string.Format(Ui.Text["StepCount"], stepCompleted, stepTotal);
+        ShowChecks(); Changed(nameof(ServiceStatus)); Changed(nameof(Versions));
+        _ = SavePreferencesAsync();
+    }
+    private void SetStatus(string key, params object[] args)
+    {
+        statusKey = key; statusArgs = args; errorDetail = null;
+        Status = string.Format(Ui.Text[key], args);
+    }
+    private void ShowChecks()
+    {
+        Checks.Clear();
+        foreach (var row in rawChecks) Checks.Add(Ui.Text.MapCheck(row));
+    }
+    private async Task SavePreferencesAsync()
+    {
+        try
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(PreferencesFile)!);
+            await AtomicFile.WriteAsync(PreferencesFile, JsonSerializer.Serialize(new { root = RootPath, workspace = WorkspacePath, region = PreferChinaMirror ? "cn" : "global", language = Ui.Text.Language }));
+        }
+        catch (Exception e) when (e is IOException or UnauthorizedAccessException) { }
+    }
+    private async Task UseCurrentPathsAsync(CancellationToken ct)
+    {
+        // The text boxes used to update only this view. Install kept the controller created at startup, so a new folder still installed under LocalAppData on C:.
+        AppPaths paths;
+        try { paths = new AppPaths(RootPath, WorkspacePath, PreferChinaMirror ? DownloadRegion.China : DownloadRegion.Global); }
+        catch (ArgumentException e)
+        {
+            throw new BigFishException("invalid-state", string.Format(Ui.Text["PathRejected"], Ui.Text.Map(e.Message)));
+        }
+        if (controller is not null
+            && controller.Paths.Root.Equals(paths.Root, StringComparison.OrdinalIgnoreCase)
+            && controller.Paths.Workspace.Equals(paths.Workspace, StringComparison.OrdinalIgnoreCase)
+            && controller.Paths.Sources.Region == paths.Sources.Region) return;
+        var next = await Task.Run(() => new BigFishController(paths), ct);
+        try { if (controller is not null) await controller.DisposeAsync(); }
+        catch { await next.DisposeAsync(); throw; }
+        Attach(next);
+        RootPath = paths.Root; WorkspacePath = paths.Workspace;
+        await SavePreferencesAsync();
+        SetStatus("PathChanged", paths.Root);
+    }
+    private HealthChecker RequireHealth() => controller?.Service.Health ?? throw new BigFishException("not-running", Ui.Text["NeedRunning"]);
     public Task SaveApiKeyAsync(string key) => Run(async ct =>
     {
         await new DshSetupClient(RequireHealth()).SaveApiKeyAsync(key, ct);
-        ApiStatus = "✓ 密钥已由 DSH 保存。有效性和余额尚未验证，请打开 DSH 发送一条消息测试。";
-        Status = "API Key 已保存；可以继续扫码绑定。";
+        apiKey = "KeySavedDetail"; ApiStatus = Ui.Text[apiKey];
+        SetStatus("KeySaved");
     });
     private async Task RefreshApiStatusAsync(CancellationToken ct)
     {
-        try { ApiStatus = await new DshSetupClient(RequireHealth()).HasApiKeyAsync(ct) ? "✓ 已有密钥，留空即可保留；尚未验证有效性或余额。" : "尚未配置，请在下方填入自己的 DeepSeek API Key。"; }
-        catch (Exception e) when (e is not OperationCanceledException) { ApiStatus = "暂时无法读取密钥配置状态；可打开 DSH 模型设置检查。"; }
+        try { apiKey = await new DshSetupClient(RequireHealth()).HasApiKeyAsync(ct) ? "KeyPresent" : "KeyMissing"; ApiStatus = Ui.Text[apiKey]; }
+        catch (Exception e) when (e is not OperationCanceledException) { apiKey = "KeyUnknown"; ApiStatus = Ui.Text[apiKey]; }
     }
     private void Attach(BigFishController c)
     {
@@ -161,8 +234,9 @@ public sealed class MainViewModel : INotifyPropertyChanged
     {
         Attach(await Task.Run(() => new BigFishController(new AppPaths(RootPath, WorkspacePath, PreferChinaMirror ? DownloadRegion.China : DownloadRegion.Global)), ct));
         // Fast local scan only. External connectivity is checked on explicit request / installation.
-        foreach (var row in await controller!.Detector.ScanAsync(await controller.Store.LoadAsync(ct), ct)) Checks.Add(row);
-        Status = "准备就绪。点击一键安装；已有安装可到管理页启动。";
+        rawChecks.Clear();
+        foreach (var row in await controller!.Detector.ScanAsync(await controller.Store.LoadAsync(ct), ct)) rawChecks.Add(row);
+        ShowChecks(); SetStatus("Ready");
     });
     private ICommand Action(Func<CancellationToken, Task> action, bool requireController = true)
     {
@@ -183,11 +257,13 @@ public sealed class MainViewModel : INotifyPropertyChanged
         try { await action(cancellation.Token); }
         catch (Exception e)
         {
-            Status = ErrorClassifier.Hint(e); Detail = LogManager.Redact(e.Message);
-            try { controller?.Log.Write($"操作失败 [{ErrorClassifier.Code(e)}]：{e.Message}"); } catch (IOException) { }
-            Stage = e is OperationCanceledException ? "已取消" : "操作未完成";
-            // The concrete error is visible on every page, not hidden behind the progress tab.
-            Status += " " + Detail;
+            var code = ErrorClassifier.Code(e);
+            statusKey = Ui.Text["Hint." + code].StartsWith("Hint.", StringComparison.Ordinal) ? "Hint.unexpected" : "Hint." + code;
+            statusArgs = []; errorDetail = LogManager.Redact(e.Message);
+            Detail = Ui.Text.Map(errorDetail); rawDetail = errorDetail;
+            try { controller?.Log.Write($"操作失败 [{code}]：{e.Message}"); } catch (IOException) { }
+            rawStage = e is OperationCanceledException ? "已取消" : "操作未完成"; Stage = Ui.Text.Map(rawStage);
+            Status = Ui.Text[statusKey] + " " + Detail;
         }
         finally { busy = false; Indeterminate = false; cancellation.Dispose(); cancellation = null; Refresh(); }
     }
@@ -196,10 +272,10 @@ public sealed class MainViewModel : INotifyPropertyChanged
         Changed(nameof(CanEdit)); Changed(nameof(ServiceStatus)); Changed(nameof(CanConfigure)); Changed(nameof(CanSaveKey));
         foreach (var command in commands) command.Refresh();
     }
-    private void Guide(string text) { Guidance = text; SelectedTab = 1; OpenWeb(); }
+    private void Guide(string key) { guidanceKey = key; Guidance = Ui.Text[key]; SelectedTab = 1; OpenWeb(); }
     private void OpenWeb()
     {
-        if (controller?.Service.IsRunning != true || controller.Service.LaunchUri is not { } uri) throw new BigFishException("not-running", "请先完成安装或启动大肥鱼。");
+        if (controller?.Service.IsRunning != true || controller.Service.LaunchUri is not { } uri) throw new BigFishException("not-running", Ui.Text["NeedInstallToOpen"]);
         ShellOpen(uri.AbsoluteUri);
     }
     private static void ShellOpen(string value) => Process.Start(new ProcessStartInfo(value) { UseShellExecute = true });

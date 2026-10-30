@@ -74,7 +74,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          TAG: v0.1.2
+          TAG: v0.1.3
           SHA: ${{ github.sha }}
         shell: bash
         run: |
@@ -83,14 +83,14 @@ jobs:
           test -s release-downloads/BigFish-Global.exe
           test "$(find release-downloads -maxdepth 1 -type f | wc -l)" -eq 2
           printf '%s\n' \
-            'BigFish Installer 0.1.2 - Windows x64' \
+            'BigFish Installer 0.1.3 - Windows x64' \
             '' \
             '下载下方中国版或国际版 EXE，双击运行即可进入图形安装器。首次安装需要联网。' \
             '无需预装 .NET / Node.js / Python。' \
-            '修复启动进度条绑定；直接在安装器填写 API Key；自动注册工作区。' \
+            '安装会使用高级页里当前填写的数据目录。中国版只有简体中文并优先使用国内镜像。国际版使用官方源，可选简体中文或 English (United States)。' \
             '' \
-            '中国版：BigFish-CN.exe（国内下载镜像优先）。' \
-            '国际版：BigFish-Global.exe（官方源优先）。' \
+            '中国版：BigFish-CN.exe（国内下载镜像优先，仅简体中文）。' \
+            '国际版：BigFish-Global.exe（官方源优先，简体中文 / English (United States)）。' \
             '' \
             'Windows CI 已通过程序启动、真实 DSH/IM 安装、认证、重复安装及停止检查。' \
             '尚未完成人工扫码、真实模型调用及完整终端用户验收；程序尚未签名。' \
@@ -103,6 +103,6 @@ jobs:
             echo "Release $TAG already exists; preserving the existing tag and assets."
           else
             gh release create "$TAG" release-downloads/BigFish-CN.exe release-downloads/BigFish-Global.exe \
-              --target "$SHA" --latest --title "BigFish Installer 0.1.2" --notes-file release-notes.md
+              --target "$SHA" --latest --title "BigFish Installer 0.1.3" --notes-file release-notes.md
           fi
           gh release view "$TAG" --json url,assets --jq '{url: .url, assets: [.assets[].name]}'
